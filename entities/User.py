@@ -8,6 +8,7 @@ from application import db
 
 
 class User(db.Model):
+    __tablename__ = 'User'
     id = Column(db.Integer, primary_key=True)
     email = Column(db.String(45))
     password = Column(db.String(45))
@@ -15,8 +16,9 @@ class User(db.Model):
     firstName = Column(db.String(45))
     lastName = Column(db.String(45))
     creationDate = db.Column('creationDate', DateTime, default=func.now())
-    sectorId = db.Column('sectorId', db.Integer, ForeignKey("Sectors.id"), nullable=True)
+    sectorId = db.Column('sectorId', db.Integer, ForeignKey("Sectors.id"), nullable=True) # We assume user belong only to one sector,
 
+'''
     def __init__(self, id, email, password, passwordChangedDate, firstName, lastName, creationDate, sectorId):
         self.id = id
         self.email = email
@@ -26,3 +28,5 @@ class User(db.Model):
         self.lastName = lastName
         self.creationDate = creationDate
         self.sectorId = sectorId
+'''
+

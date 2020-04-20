@@ -5,18 +5,24 @@ from sqlalchemy import Column, ForeignKey
 from sqlalchemy import DateTime, func, ForeignKey
 from application import db
 
+# we can decide that each package can be related to more than one sector in different prices
 
 class PackagesSectors(db.Model):
+    __tablename__ = 'PackagesSectors'
     id = Column(db.Integer, primary_key=True)
     packageId = db.Column('packageId', db.Integer, ForeignKey("Package.id"), nullable=True)
     sectorId = db.Column('sectorId', db.Integer, ForeignKey("Sectors.id"), nullable=True)
     creationDate = db.Column('creationDate', DateTime, default=func.now())
-    price = Column(db.Integer)
+    price = Column(db.Integer) # we assume each package can be sold in different costs to different sectors
 
+'''
     def __init__(self, id, packageId, sectorId, creationDate, price):
         self.id = id
         self.packageId = packageId
         self.sectorId = sectorId
         self.creationDate = creationDate
         self.price = price
+
+'''
+
 

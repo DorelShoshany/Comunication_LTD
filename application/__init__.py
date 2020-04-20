@@ -1,14 +1,37 @@
 from flask import Flask
-
-# initializing a variable of Flask
 from config import Config
 from flask_sqlalchemy import SQLAlchemy
+from flask_marshmallow import Marshmallow
+
 
 app = Flask(__name__)
 app.config.from_object(Config)
-
-db = SQLAlchemy(app)
+db = SQLAlchemy()
+db.init_app(app)
+ma = Marshmallow(app)
 
 from application import routes
 
+'''
+@app.cli.command('db_create')
+def db_create():
+    db.create_all()
+    print('db created!')
 
+
+@app.cli.command('db_drop')
+def db_drop():
+    db.drop_all()
+    print('db drop all!')
+
+
+@app.cli.command('db_seed')
+def db_seed():
+    packages = Packages (name="Packages for singels")
+    db.session(packages)
+    db.session.commit()
+
+
+
+
+'''
