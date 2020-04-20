@@ -18,15 +18,13 @@ class User(db.Model):
     creationDate = db.Column('creationDate', DateTime, default=func.now())
     sectorId = db.Column('sectorId', db.Integer, ForeignKey("Sectors.id"), nullable=True) # We assume user belong only to one sector,
 
-'''
-    def __init__(self, id, email, password, passwordChangedDate, firstName, lastName, creationDate, sectorId):
-        self.id = id
+    def __init__(self, email, password, firstName, lastName, sectorId):
         self.email = email
         self.password = password
-        self.passwordChangedDate = passwordChangedDate
         self.firstName = firstName
         self.lastName = lastName
-        self.creationDate = creationDate
         self.sectorId = sectorId
-'''
+
+    def __str__(self):
+        return str(self.email)
 

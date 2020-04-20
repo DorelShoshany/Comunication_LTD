@@ -5,4 +5,4 @@ from application import ma
 
 class UserRegistrationViewModel(ma.ModelSchema):
     class Meta:
-        fields = ('name', 'email', 'password', 'sectorId' )
+        fields = ('firstName', 'lastName', 'email', 'password', 'sectorId')

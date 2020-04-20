@@ -13,11 +13,9 @@ class Sectors(db.Model):
     name = Column(db.String(20))
     description = Column(db.String(20))
 
-'''
-    def __init__(self, id, name, description):
-        self.id = id
+    def __init__(self, name, description):
         self.name = name
         self.description = description
 
-'''
+
 

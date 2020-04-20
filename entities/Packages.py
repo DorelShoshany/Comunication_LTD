@@ -11,10 +11,7 @@ class Packages(db.Model):
     name = Column(db.String(20))
     creationDate = db.Column('creationDate', DateTime, default=func.now())
 
-'''
-    def __init__(self, id, name, creationDate):
-        self.id = id
+    def __init__(self, name):
         self.name = name
-        self.creationDate = creationDate
-'''
+
 

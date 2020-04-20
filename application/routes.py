@@ -2,7 +2,12 @@
 
 # decorating index function with the app.route
 from application import app
-from flask import render_template, request, Response, json
+from flask import render_template, request, Response, json, jsonify
+
+from controllers.AuthorizationController import AuthorizationController
+from controllers.PackagesController import PackagesController
+from controllers.RegistrationController import RegistrationController
+from controllers.SectorController import SectorController
 
 packagesData = [{"courseID":"1111","title":"PHP 111","description":"Intro to PHP","credits":"3","term":"Fall, Spring"}, {"courseID":"2222","title":"Java 1","description":"Intro to Java Programming","credits":"4","term":"Spring"}, {"courseID":"3333","title":"Adv PHP 201","description":"Advanced PHP Programming","credits":"3","term":"Fall"}, {"courseID":"4444","title":"Angular 1","description":"Intro to Angular","credits":"3","term":"Fall, Spring"}, {"courseID":"5555","title":"Java 2","description":"Advanced Java Programming","credits":"4","term":"Fall"}]
 
@@ -23,11 +28,6 @@ def packages():
     return render_template("packages.html",packagesData=packagesData, login=True)
 
 
-@app.route("/register")
-def register():
-    return render_template("register.html", login=False)
-
-
 @app.route("/enrollment", methods=["GET", "POST"])
 def enrollment():
     id = request.form.get('courseID')
@@ -36,6 +36,39 @@ def enrollment():
     return render_template("enrollment.html", enrollment=True, data={"id": id, "title": title, "term": term})
 
 
+@app.route("/api/register", methods=['POST'])
+def register():
+    registrationController = RegistrationController()
+    registrationController.Register(request)
+    return jsonify(message="user created successfully. "), 201
+
+
+@app.route("/api/addSector", methods=['POST'])
+def add_sector():
+    sectorController = SectorController()
+    sectorController.createSector(request)
+    return jsonify(message="sector created successfully. "), 201
+
+
+@app.route("/api/addPackages", methods=['POST'])
+def add_package():
+    packagesController = PackagesController()
+    packagesController.createPackages(request)
+    return jsonify(message="packages created successfully. "), 201
+
+
+@app.route("/api/login", methods=['POST'])
+def loginUser():
+    authorizationController = AuthorizationController()
+    a_t = authorizationController.Login(request)
+    if a_t:
+        return jsonify(message="Login succeed!", access_token=a_t )
+    else:
+        return jsonify(message="Login failed!, bad email or password"), 401
+
+
+
+'''
 @app.route("/api/")
 @app.route("/api/<idx>")
 def api(idx=None):
@@ -44,7 +77,10 @@ def api(idx=None):
     else:
         jdata = packagesData[int(idx)]
 
-            # Response object =json.dumps(jdata)
+            # Response object = json.dumps(jdata)
     return Response(json.dumps(jdata), mimetype="application/json")
+
+'''
+
 
 

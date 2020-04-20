@@ -7,5 +7,6 @@ class Config(object):
     basedir = os.path.dirname(os.path.abspath(__file__))
     SQLALCHEMY_DATABASE_URI = "sqlite:///{}".format(os.path.join(basedir, nameFileDB))
     SQLALCHEMY_TRACK_MODIFICATIONS = False
+    JWT_SECRET_KEY = 'super-secret' # TODO: change this!
 
 
