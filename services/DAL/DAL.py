@@ -1,4 +1,5 @@
 from application import db
+from entities.PackagesSectors import PackagesSectors
 from entities.User import User
 
 
@@ -27,3 +28,5 @@ def save_new_package_to_db (package):
     return True
 
 
+def get_packages_sectors_from_db_by_sectorId(sectorId):
+    return PackagesSectors.query.filter_by(id=sectorId)

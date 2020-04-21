@@ -31,6 +31,15 @@ def login():
 def packages():
     return render_template("packages.html",packagesData=packagesData, login=True)
 
+@app.route("/api/packages" , methods=["GET"])
+@fresh_jwt_required
+def api_get_packages_to_buy():
+    user_id = get_jwt_identity()
+    print(user_id)
+    #packagesSectorController = PackagesSectorController()
+    #res = packagesSectorController.get_all_packages_to_buy_by_sector_id(user_id)
+    return "dorel", 200#jsonify(res), 200
+
 
 @app.route("/enrollment", methods=["GET", "POST"])
 def enrollment():
