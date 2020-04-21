@@ -32,7 +32,7 @@ def packages():
     return render_template("packages.html",packagesData=packagesData, login=True)
 
 @app.route("/api/packages" , methods=["GET"])
-@fresh_jwt_required
+@jwt_required
 def api_get_packages_to_buy():
     user_id = get_jwt_identity()
     print(user_id)
@@ -94,7 +94,7 @@ def api_login():
     user = authorizationController.Login(request)
     if user:
         #at = create_access_token(identity=user.email)
-        return assign_access_refresh_tokens(user.email , app.config['BASE_URL'] + '/yourPurchases') #jsonify(message="Login succeed!", access_token=at)
+        return assign_access_refresh_tokens(user , app.config['BASE_URL'] + '/yourPurchases') #jsonify(message="Login succeed!", access_token=at)
     else:
         return jsonify(message="Login failed!, bad email or password"), 401
 
