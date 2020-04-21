@@ -9,6 +9,7 @@ from flask import render_template, request, Response, json, jsonify, make_respon
 
 from controllers.AuthorizationController import AuthorizationController
 from controllers.PackagesController import PackagesController
+from controllers.PackagesSectorController import PackagesSectorController
 from controllers.RegistrationController import RegistrationController
 from controllers.SectorController import SectorController
 
@@ -56,6 +57,7 @@ def api_register():
         return jsonify(message="user created failed. "), 400
 
 
+#TODO: only user as admin
 @app.route("/api/addSector", methods=['POST'])
 def add_sector():
     sectorController = SectorController()
@@ -63,12 +65,19 @@ def add_sector():
     return jsonify(message="sector created successfully. "), 201
 
 
-@app.route("/api/addPackages", methods=['POST'])
+#TODO: only user as admin
+@app.route("/api/addPackage", methods=['POST'])
 def add_package():
     packagesController = PackagesController()
     packagesController.createPackages(request)
-    return jsonify(message="packages created successfully. "), 201
+    return jsonify(message="package created successfully. "), 201
 
+#TODO: only user as admin
+@app.route("/api/addPackagesSector", methods=['POST'])
+def addPackagesSector():
+    packagesSectorController = PackagesSectorController()
+    packagesSectorController.createPackagesSector(request)
+    return jsonify(message="Packages for Sector created successfully. "), 201
 
 @app.route("/api/login", methods=['POST'])
 def api_login():

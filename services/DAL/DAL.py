@@ -10,6 +10,10 @@ def save_new_user_to_db (user):
     except IOError:
         return False
 
+def save_new_packages_sectors_to_db (packagesSector):
+    db.session.add(packagesSector)
+    db.session.commit()
+    return True
 
 def save_new_sector_to_db (sector):
     db.session.add(sector)

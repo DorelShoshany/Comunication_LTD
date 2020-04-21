@@ -10,19 +10,17 @@ from application import db
 class PackagesSectors(db.Model):
     __tablename__ = 'PackagesSectors'
     id = Column(db.Integer, primary_key=True)
-    packageId = db.Column('packageId', db.Integer, ForeignKey("Package.id"), nullable=True)
+    packageId = db.Column('packageId', db.Integer, ForeignKey("Packages.id"), nullable=True)
     sectorId = db.Column('sectorId', db.Integer, ForeignKey("Sectors.id"), nullable=True)
     creationDate = db.Column('creationDate', DateTime, default=func.now())
     price = Column(db.Integer) # we assume each package can be sold in different costs to different sectors
 
-'''
-    def __init__(self, id, packageId, sectorId, creationDate, price):
-        self.id = id
+
+    def __init__(self, packageId, sectorId, price):
         self.packageId = packageId
         self.sectorId = sectorId
-        self.creationDate = creationDate
         self.price = price
 
-'''
+
 
 
