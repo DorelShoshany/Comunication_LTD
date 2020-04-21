@@ -1,8 +1,11 @@
 
 
 # decorating index function with the app.route
-from application import app
-from flask import render_template, request, Response, json, jsonify
+from flask_jwt_extended import create_access_token, jwt_refresh_token_required, get_jwt_identity, set_access_cookies, \
+    jwt_required, unset_jwt_cookies, unset_access_cookies, fresh_jwt_required
+
+from application import app, jwt
+from flask import render_template, request, Response, json, jsonify, make_response, redirect
 
 from controllers.AuthorizationController import AuthorizationController
 from controllers.PackagesController import PackagesController
@@ -35,12 +38,22 @@ def enrollment():
     term = request.form.get('term')
     return render_template("enrollment.html", enrollment=True, data={"id": id, "title": title, "term": term})
 
+@app.route("/register")
+def register():
+    return render_template("register.html")
+
+@app.route("/yourPurchases")
+def yourPurchases():
+    return render_template("yourPurchases.html")
+
 
 @app.route("/api/register", methods=['POST'])
-def register():
+def api_register():
     registrationController = RegistrationController()
-    registrationController.Register(request)
-    return jsonify(message="user created successfully. "), 201
+    if registrationController.Register(request) == True:
+        return jsonify(message="user created successfully. "), 201
+    else:
+        return jsonify(message="user created failed. "), 400
 
 
 @app.route("/api/addSector", methods=['POST'])
@@ -58,17 +71,78 @@ def add_package():
 
 
 @app.route("/api/login", methods=['POST'])
-def loginUser():
+def api_login():
     authorizationController = AuthorizationController()
-    a_t = authorizationController.Login(request)
-    if a_t:
-        return jsonify(message="Login succeed!", access_token=a_t )
+    user = authorizationController.Login(request)
+    if user:
+        #at = create_access_token(identity=user.email)
+        return assign_access_refresh_tokens(user.email , app.config['BASE_URL'] + '/yourPurchases') #jsonify(message="Login succeed!", access_token=at)
     else:
         return jsonify(message="Login failed!, bad email or password"), 401
 
 
+@app.route("/api/yourPurchases")
+@fresh_jwt_required
+def api_your_purchases():
+    return render_template("yourPurchases.html")
+
+
+# tokens func:
+def assign_access_refresh_tokens(user_id, url):
+    access_token = create_access_token(identity=str(user_id))
+    resp = make_response(redirect(url, 302))
+    set_access_cookies(resp, access_token)
+    return resp
+
+
+@app.route('/token/refresh', methods=['GET'])
+@jwt_refresh_token_required
+def refresh():
+    # Refreshing expired Access token
+    user_id = get_jwt_identity()
+    access_token = create_access_token(identity=str(user_id))
+    resp = make_response(redirect(app.config['BASE_URL'] + '/', 302))
+    set_access_cookies(resp, access_token)
+    return resp
+
+@app.route('/logout', methods=['GET'])
+@jwt_required
+def logout():
+    # Revoke Fresh/Non-fresh Access and Refresh tokens
+    return unset_jwt(), 302
+
+
+def unset_jwt():
+    resp = make_response(redirect(app.config['BASE_URL'] + '/', 302))
+    unset_jwt_cookies(resp)
+    return resp
+
+
+@jwt.unauthorized_loader
+def unauthorized_callback(callback):
+    # No auth header
+    return redirect(app.config['BASE_URL'] + '/login', 302)
+
+
+@jwt.invalid_token_loader
+def invalid_token_callback(callback):
+    # Invalid Fresh/Non-Fresh Access token in auth header
+    resp = make_response(redirect(app.config['BASE_URL'] + '/signup'))
+    unset_jwt_cookies(resp)
+    return resp, 302
+
+
+@jwt.expired_token_loader
+def expired_token_callback(callback):
+    # Expired auth header
+    resp = make_response(redirect(app.config['BASE_URL'] + '/token/refresh'))
+    unset_access_cookies(resp)
+    return resp, 302
+
 
 '''
+
+
 @app.route("/api/")
 @app.route("/api/<idx>")
 def api(idx=None):

@@ -3,9 +3,12 @@ from entities.User import User
 
 
 def save_new_user_to_db (user):
-    db.session.add(user)
-    db.session.commit()
-    return True
+    try:
+        db.session.add(user)
+        db.session.commit()
+        return True
+    except IOError:
+        return False
 
 
 def save_new_sector_to_db (sector):
@@ -19,7 +22,4 @@ def save_new_package_to_db (package):
     db.session.commit()
     return True
 
-
-def get_user_from_db(email, password):
-    return User.query.filter_by(email=email,password=password ).first()
 

@@ -11,7 +11,7 @@ class User(db.Model):
     __tablename__ = 'User'
     id = Column(db.Integer, primary_key=True)
     email = Column(db.String(45))
-    password = Column(db.String(45))
+    password = Column(db.String(150))
     passwordChangedDate = db.Column('passwordChangedDate', DateTime, default=func.now())
     firstName = Column(db.String(45))
     lastName = Column(db.String(45))

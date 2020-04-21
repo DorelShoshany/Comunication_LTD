@@ -1,9 +1,7 @@
 
-# data base model:
-import datetime
 
 from sqlalchemy import Column, ForeignKey
-
+from sqlalchemy import DateTime, func, ForeignKey
 from application import db
 
 
