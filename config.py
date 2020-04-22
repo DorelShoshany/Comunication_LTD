@@ -1,6 +1,7 @@
 import datetime
 import os
 
+import export
 
 class Config(object):
 
@@ -20,7 +21,8 @@ class Config(object):
     JWT_TOKEN_LOCATION ='cookies'
     JWT_CSRF_CHECK_FORM = True
 
-    # mail:\
+    # mail:
+
     MAIL_SERVER = 'smtp.mailtrap.io'
     MAIL_PORT = 2525
     MAIL_USERNAME = os.environ.get('MAIL_USERNAME')
@@ -29,9 +31,24 @@ class Config(object):
     MAIL_USE_SSL = False
     MAIL_DEFAULT_SENDER = 'dorel@ComunicationLTD.com'
 
+
     #TODO: use this!
     # CONST:
     LENGTH_OF_THE_SALT = 32
     LENGTH_OF_THE_PASSWORD = 10
     HISTORY_OF_THE_PASSWORDS = 3
     LOGIN_LIMIT_TRYING = 3
+    TITLE_MSG_EMAIL = "Password Recovery - Communication LTD"
+
+'''
+
+    try:
+        print("MAIL_PASSWORD:", os.environ['MAIL_PASSWORD'])
+    except KeyError:
+        print("Environment variable does not exist")
+
+'''
+
+
+
+

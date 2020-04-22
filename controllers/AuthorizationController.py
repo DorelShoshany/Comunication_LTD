@@ -1,8 +1,6 @@
 
-
-from flask_mail import Message
-
-from services.DAL import DAL, UserProvider
+from services import EmailSenderService
+from services.DAL import UserProvider
 from services.PasswordVerifier import verify_user_password
 
 
@@ -27,10 +25,13 @@ class AuthorizationController():
             email = request.json['email']
         else:
             email = request.form['email']
-        #TODO: find if the user is exist in the DB -> if he is -> send emaiil
-        msg = Message("Hello", recipients=[email])
-        msg.body = "testing"
-        return msg
+        user = UserProvider.get_user_from_db_by_email(email)
+        if user:
+        # TODO: generate a token
+            EmailSenderService.send_password_recovery(email)
+            return True
+        else:
+            return False
 
 
 

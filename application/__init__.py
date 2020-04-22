@@ -1,3 +1,5 @@
+from smtplib import SMTP
+
 from flask import Flask
 from flask_jwt_extended import JWTManager
 from flask_mail import Mail
@@ -21,6 +23,7 @@ from application import routesHtml, routesApi
 @app.before_first_request
 def create_tables():
     db.create_all()
+   # SMTP.login(mail, user=Config.MAIL_USERNAME, password=Config.MAIL_PASSWORD)
 
 '''
 @app.cli.command('db_create')

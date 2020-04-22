@@ -1,7 +1,7 @@
 from flask_jwt_extended import create_access_token, jwt_refresh_token_required, get_jwt_identity, set_access_cookies, \
     jwt_required, unset_jwt_cookies, unset_access_cookies, fresh_jwt_required
 
-
+from config import Config
 from controllers.AuthorizationController import AuthorizationController
 from controllers.PackagesController import PackagesController
 from controllers.PackagesSectorController import PackagesSectorController
@@ -11,12 +11,16 @@ from controllers.SectorController import SectorController
 from application import app, jwt, mail
 from flask import render_template, request, Response, json, jsonify, make_response, redirect
 
+
+#TODO: change all 404,200 to enum
+
 @app.route("/api/forgotYourPassword", methods=["POST"])
 def api_forgot_your_password():
     authorizationController = AuthorizationController()
-    msg = authorizationController.start_password_recovery(request)
-    mail.send(msg)
-    return "dorel" , 200
+    if authorizationController.start_password_recovery(request):
+        return jsonify(message="email send successfully. "), 200
+    else:
+        return jsonify(message="not found. "), 404
 
 
 @app.route("/api/packagesOfferings" , methods=["GET"])
@@ -61,6 +65,7 @@ def addPackagesSector():
 
 @app.route("/api/login", methods=['POST'])
 def api_login():
+    # TODO: save the attempt to login -> if 3 times blocks him?
     authorizationController = AuthorizationController()
     user = authorizationController.login(request)
     if user:
