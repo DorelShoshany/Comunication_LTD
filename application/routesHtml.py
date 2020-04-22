@@ -40,6 +40,13 @@ def yourPackages():
     return render_template("yourPackages.html")
 
 
+@app.route("/forgotYourPassword")
+def forgotYourPassword():
+    return render_template("forgotYourPassword.html")
+
+
+
+
 
 '''
 

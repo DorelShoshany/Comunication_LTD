@@ -1,5 +1,6 @@
 from flask import Flask
 from flask_jwt_extended import JWTManager
+from flask_mail import Mail
 
 from config import Config
 from flask_sqlalchemy import SQLAlchemy
@@ -12,7 +13,7 @@ db = SQLAlchemy()
 db.init_app(app)
 ma = Marshmallow(app)
 jwt = JWTManager(app)
-
+mail = Mail(app)
 
 from application import routesHtml, routesApi
 

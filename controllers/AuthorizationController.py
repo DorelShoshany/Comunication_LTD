@@ -1,12 +1,14 @@
 
-from flask_jwt_extended import create_access_token, create_refresh_token
+
+from flask_mail import Message
 
 from services.DAL import DAL, UserProvider
 from services.PasswordVerifier import verify_user_password
 
 
 class AuthorizationController():
-    def Login(self, request):
+
+    def login(self, request):
         if request.is_json:
             email = request.json['email']
             enteredPassword = request.json['password']
@@ -18,5 +20,17 @@ class AuthorizationController():
             return user
         else:
             return None
+
+    # POST: This will generate a token and send to the user email in order
+    def start_password_recovery(self, request):
+        if request.is_json:
+            email = request.json['email']
+        else:
+            email = request.form['email']
+        #TODO: find if the user is exist in the DB -> if he is -> send emaiil
+        msg = Message("Hello", recipients=[email])
+        msg.body = "testing"
+        return msg
+
 
 

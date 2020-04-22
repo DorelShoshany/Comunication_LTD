@@ -1,29 +1,32 @@
 from flask_jwt_extended import create_access_token, jwt_refresh_token_required, get_jwt_identity, set_access_cookies, \
     jwt_required, unset_jwt_cookies, unset_access_cookies, fresh_jwt_required
 
-from DTOs.UserRegistrationViewModel import UserRegistrationViewModel
+
 from controllers.AuthorizationController import AuthorizationController
 from controllers.PackagesController import PackagesController
 from controllers.PackagesSectorController import PackagesSectorController
 from controllers.RegistrationController import RegistrationController
 from controllers.SectorController import SectorController
 
-from application import app, jwt
+from application import app, jwt, mail
 from flask import render_template, request, Response, json, jsonify, make_response, redirect
+
+@app.route("/api/forgotYourPassword", methods=["POST"])
+def api_forgot_your_password():
+    authorizationController = AuthorizationController()
+    msg = authorizationController.start_password_recovery(request)
+    mail.send(msg)
+    return "dorel" , 200
 
 
 @app.route("/api/packagesOfferings" , methods=["GET"])
 @jwt_required
 def api_get_packages_to_buy():
     user_id = get_jwt_identity()
-    #print(user_id)
     packagesSectorController = PackagesSectorController()
     res = packagesSectorController.get_all_packages_to_buy_by_sector_id(user_id)
-    return jsonify(res), 200 #"dorel" , 200
-   # urls = URL.query.all()
-   # url_schema = URLSchema(many=True)
-   # out_put = url_schema.dump(urls)
-   # return jsonify({'urls': out_put})
+    return jsonify(res), 200
+
 
 @app.route("/api/register", methods=['POST'])
 def api_register():
@@ -59,10 +62,8 @@ def addPackagesSector():
 @app.route("/api/login", methods=['POST'])
 def api_login():
     authorizationController = AuthorizationController()
-    user = authorizationController.Login(request)
+    user = authorizationController.login(request)
     if user:
-        #userRegistrationViewModel = UserRegistrationViewModel()
-        #dump = userRegistrationViewModel.dump(user) -> jsonify(dump)
         return assign_access_refresh_tokens(user.id, app.config['BASE_URL'] + '/yourPackages') #jsonify(message="Login succeed!", access_token=at)
     else:
         return jsonify(message="Login failed!, bad email or password"), 401
