@@ -21,6 +21,7 @@ class PackagesSectors(db.Model):
         self.sectorId = sectorId
         self.price = price
 
-
+    def __str__(self):
+        print("PackageId: " + str(self.packageId) + ", SectorId: "+ str(self.sectorId) +", Price:"+ str(self.price))
 
 

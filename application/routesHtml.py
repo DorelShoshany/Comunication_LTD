@@ -19,9 +19,9 @@ def login():
     return render_template("login.html", login=False)
 
 
-@app.route("/packages")
-def packages():
-    return render_template("packages.html",packagesData=packagesData, login=True)
+@app.route("/packagesOfferings")
+def packagesOfferings():
+    return render_template("packagesOfferings.html",packagesData=packagesData, login=True)
 
 
 @app.route("/enrollment", methods=["GET", "POST"])
@@ -35,9 +35,9 @@ def enrollment():
 def register():
     return render_template("register.html")
 
-@app.route("/yourPurchases")
-def yourPurchases():
-    return render_template("yourPurchases.html")
+@app.route("/yourPackages")
+def yourPackages():
+    return render_template("yourPackages.html")
 
 
 

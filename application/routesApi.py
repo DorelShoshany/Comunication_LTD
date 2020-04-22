@@ -1,6 +1,7 @@
 from flask_jwt_extended import create_access_token, jwt_refresh_token_required, get_jwt_identity, set_access_cookies, \
     jwt_required, unset_jwt_cookies, unset_access_cookies, fresh_jwt_required
 
+from DTOs.UserRegistrationViewModel import UserRegistrationViewModel
 from controllers.AuthorizationController import AuthorizationController
 from controllers.PackagesController import PackagesController
 from controllers.PackagesSectorController import PackagesSectorController
@@ -11,23 +12,26 @@ from application import app, jwt
 from flask import render_template, request, Response, json, jsonify, make_response, redirect
 
 
-@app.route("/api/packages" , methods=["GET"])
+@app.route("/api/packagesOfferings" , methods=["GET"])
 @jwt_required
 def api_get_packages_to_buy():
     user_id = get_jwt_identity()
-    print(user_id)
-    #packagesSectorController = PackagesSectorController()
-    #res = packagesSectorController.get_all_packages_to_buy_by_sector_id(user_id)
-    return "dorel" , 200#jsonify(res), 200
-
+    #print(user_id)
+    packagesSectorController = PackagesSectorController()
+    res = packagesSectorController.get_all_packages_to_buy_by_sector_id(user_id)
+    return jsonify(res), 200 #"dorel" , 200
+   # urls = URL.query.all()
+   # url_schema = URLSchema(many=True)
+   # out_put = url_schema.dump(urls)
+   # return jsonify({'urls': out_put})
 
 @app.route("/api/register", methods=['POST'])
 def api_register():
     registrationController = RegistrationController()
     if registrationController.Register(request) == True:
-        return jsonify(message="user created successfully. "), 201
+        return jsonify(message="User created successfully. "), 201
     else:
-        return jsonify(message="user created failed. "), 400
+        return jsonify(message="User created failed. "), 400
 
 
 #TODO: only user as admin
@@ -35,7 +39,7 @@ def api_register():
 def add_sector():
     sectorController = SectorController()
     sectorController.createSector(request)
-    return jsonify(message="sector created successfully. "), 201
+    return jsonify(message="Sector created successfully. "), 201
 
 
 #TODO: only user as admin
@@ -43,7 +47,7 @@ def add_sector():
 def add_package():
     packagesController = PackagesController()
     packagesController.createPackages(request)
-    return jsonify(message="package created successfully. "), 201
+    return jsonify(message="Package created successfully. "), 201
 
 #TODO: only user as admin
 @app.route("/api/addPackagesSector", methods=['POST'])
@@ -57,22 +61,22 @@ def api_login():
     authorizationController = AuthorizationController()
     user = authorizationController.Login(request)
     if user:
-        #at = create_access_token(identity=user.email)
-        return assign_access_refresh_tokens(user , app.config['BASE_URL'] + '/yourPurchases') #jsonify(message="Login succeed!", access_token=at)
+        #userRegistrationViewModel = UserRegistrationViewModel()
+        #dump = userRegistrationViewModel.dump(user) -> jsonify(dump)
+        return assign_access_refresh_tokens(user.id, app.config['BASE_URL'] + '/yourPackages') #jsonify(message="Login succeed!", access_token=at)
     else:
         return jsonify(message="Login failed!, bad email or password"), 401
 
 
-@app.route("/api/yourPurchases")
-@fresh_jwt_required
-def api_your_purchases():
-    return render_template("yourPurchases.html")
-
+@app.route("/api/yourPackages")
+@jwt_required
+def api_yourPackages():
+    return "yourPackages",200 #render_template("yourPackages.html")
 
 
 # tokens func:
-def assign_access_refresh_tokens(user_id, url):
-    access_token = create_access_token(identity=str(user_id))
+def assign_access_refresh_tokens(user, url):
+    access_token = create_access_token(identity=user)
     resp = make_response(redirect(url, 302))
     set_access_cookies(resp, access_token)
     return resp

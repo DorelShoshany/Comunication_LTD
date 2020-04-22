@@ -1,4 +1,4 @@
-from DTOs.PackagesSectorViewModle import PackagesSectorViewModle
+from DTOs.PackagesSectorViewModel import PackagesSectorViewModle
 from entities.PackagesSectors import PackagesSectors
 from services.DAL import DAL
 from services.DAL.DAL import get_packages_sectors_from_db_by_sectorId
@@ -18,7 +18,9 @@ class PackagesSectorController():
         packagesSector = PackagesSectors(packageId=packageId, sectorId=sectorId, price=price)
         DAL.save_new_packages_sectors_to_db(packagesSector)
 
+
     def get_all_packages_to_buy_by_sector_id(self, userId):
         user = get_user_from_db_by_id(userId)
         packagesSectorsList = get_packages_sectors_from_db_by_sectorId(user.sectorId)
-        return PackagesSectorViewModle.dump(packagesSectorsList)
+        packagesSectorViewModel = PackagesSectorViewModle(many=True)
+        return packagesSectorViewModel.dump(packagesSectorsList)
