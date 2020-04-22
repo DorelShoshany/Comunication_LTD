@@ -14,7 +14,7 @@ ma = Marshmallow(app)
 jwt = JWTManager(app)
 
 
-from application import routes
+from application import routesHtml, routesApi
 
 
 @app.before_first_request
