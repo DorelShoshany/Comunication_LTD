@@ -16,14 +16,11 @@ from flask import render_template, request, Response, json, jsonify, make_respon
 @jwt_required
 def api_changePassword():
     user_id = get_jwt_identity()
-    print(user_id)
-    return "dorel", 200
-    #authorizationController = AuthorizationController()
-    #user = authorizationController.change_password(request)
-    #if user:
-     #   return assign_access_refresh_tokens(user.id, app.config['BASE_URL'] + '/yourPackages') #jsonify(message="Login succeed!", access_token=at)
-    #else:
-     #   return jsonify(message="changePassword failed!"), 401
+    authorizationController = AuthorizationController()
+    if authorizationController.change_password(request, user_id):
+        return make_response(redirect(app.config['BASE_URL'] + '/', 302))
+    else:
+        return jsonify(message="Change Password failed!"), 401
 
 
 @app.route("/api/passwordRecovery", methods=["POST"])
@@ -91,9 +88,9 @@ def api_login():
     authorizationController = AuthorizationController()
     user = authorizationController.login(request)
     if user:
-        return assign_access_refresh_tokens(user.id, app.config['BASE_URL'] + '/yourPackages') #jsonify(message="Login succeed!", access_token=at)
+        return assign_access_refresh_tokens(user.id, app.config['BASE_URL'] + '/yourPackages')
     else:
-        return jsonify(message="Login failed!, bad email or password"), 401
+        return jsonify(message="Login failed!, bad email or password "), 404
 
 
 @app.route("/api/yourPackages")

@@ -1,6 +1,7 @@
 from application import db
 from entities.PackagesSectors import PackagesSectors
 from entities.User import User
+from entities.UserPasswordsHistory import UserPasswordsHistory
 
 
 def save_new_user_to_db (user):
@@ -10,6 +11,17 @@ def save_new_user_to_db (user):
         return True
     except IOError:
         return False
+
+
+
+def save_user_password_history_to_db(user):
+    userId = user.id
+    password = user.password
+    userPasswordsHistory = UserPasswordsHistory(userId=userId, password=password)
+    db.session.add(userPasswordsHistory)
+    db.session.commit()
+    return True
+
 
 def save_new_packages_sectors_to_db (packagesSector):
     db.session.add(packagesSector)

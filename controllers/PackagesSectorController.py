@@ -1,4 +1,4 @@
-from DTOs.PackagesSectorViewModel import PackagesSectorViewModle
+from DTOs.PackagesSectorViewModel import PackagesSectorViewModel
 from entities.PackagesSectors import PackagesSectors
 from services.DAL import DAL
 from services.DAL.DAL import get_packages_sectors_from_db_by_sectorId
@@ -22,5 +22,5 @@ class PackagesSectorController():
     def get_all_packages_to_buy_by_sector_id(self, userId):
         user = get_user_from_db_by_id(userId)
         packagesSectorsList = get_packages_sectors_from_db_by_sectorId(user.sectorId)
-        packagesSectorViewModel = PackagesSectorViewModle(many=True)
+        packagesSectorViewModel = PackagesSectorViewModel(many=True)
         return packagesSectorViewModel.dump(packagesSectorsList)

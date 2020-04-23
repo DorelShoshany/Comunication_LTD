@@ -12,12 +12,11 @@ class UserPasswordsHistory(db.Model):
     userId = db.Column('userId', db.Integer, ForeignKey("User.id"), nullable=True)
     password = Column(db.String(150))
     creationDate = db.Column('creationDate', DateTime, default=func.now())
-'''
-    def __init__(self, id, userId, password, creationDate):
-        self.id = id
+
+    def __init__(self, userId, password):
         self.userId = userId
         self.password = password
-        self.creationDate = creationDate
-'''
+
+
 
 
