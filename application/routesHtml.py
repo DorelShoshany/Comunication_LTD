@@ -31,9 +31,11 @@ def enrollment():
     term = request.form.get('term')
     return render_template("enrollment.html", enrollment=True, data={"id": id, "title": title, "term": term})
 
+
 @app.route("/register")
 def register():
     return render_template("register.html")
+
 
 @app.route("/yourPackages")
 def yourPackages():
@@ -45,7 +47,14 @@ def forgotYourPassword():
     return render_template("forgotYourPassword.html")
 
 
+@app.route("/passwordRecovery")
+def passwordRecovery():
+    return render_template("passwordRecovery.html")
 
+
+@app.route("/changePassword")
+def changePassword():
+    return render_template("changePassword.html")
 
 
 '''

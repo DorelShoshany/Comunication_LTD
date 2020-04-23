@@ -1,26 +1,48 @@
 from flask_jwt_extended import create_access_token, jwt_refresh_token_required, get_jwt_identity, set_access_cookies, \
     jwt_required, unset_jwt_cookies, unset_access_cookies, fresh_jwt_required
 
-from config import Config
 from controllers.AuthorizationController import AuthorizationController
 from controllers.PackagesController import PackagesController
 from controllers.PackagesSectorController import PackagesSectorController
 from controllers.RegistrationController import RegistrationController
 from controllers.SectorController import SectorController
-
 from application import app, jwt, mail
 from flask import render_template, request, Response, json, jsonify, make_response, redirect
 
-
 #TODO: change all 404,200 to enum
+
+
+@app.route("/api/changePassword", methods=["POST"])
+@jwt_required
+def api_changePassword():
+    user_id = get_jwt_identity()
+    print(user_id)
+    return "dorel", 200
+    #authorizationController = AuthorizationController()
+    #user = authorizationController.change_password(request)
+    #if user:
+     #   return assign_access_refresh_tokens(user.id, app.config['BASE_URL'] + '/yourPackages') #jsonify(message="Login succeed!", access_token=at)
+    #else:
+     #   return jsonify(message="changePassword failed!"), 401
+
+
+@app.route("/api/passwordRecovery", methods=["POST"])
+def api_passwordRecovery():
+    authorizationController = AuthorizationController()
+    user = authorizationController.verify_password_recovery(request)
+    if user:
+        return assign_access_refresh_tokens(user.id, app.config['BASE_URL'] + '/changePassword')
+    else:
+        return jsonify(message="Do not found. "), 404
+
 
 @app.route("/api/forgotYourPassword", methods=["POST"])
 def api_forgot_your_password():
     authorizationController = AuthorizationController()
     if authorizationController.start_password_recovery(request):
-        return jsonify(message="email send successfully. "), 200
+        return make_response(redirect(app.config['BASE_URL'] + '/passwordRecovery', 302))
     else:
-        return jsonify(message="not found. "), 404
+        return jsonify(message="Do not found email. "), 404
 
 
 @app.route("/api/packagesOfferings" , methods=["GET"])
@@ -35,7 +57,7 @@ def api_get_packages_to_buy():
 @app.route("/api/register", methods=['POST'])
 def api_register():
     registrationController = RegistrationController()
-    if registrationController.Register(request) == True:
+    if registrationController.Register(request):
         return jsonify(message="User created successfully. "), 201
     else:
         return jsonify(message="User created failed. "), 400
@@ -77,7 +99,7 @@ def api_login():
 @app.route("/api/yourPackages")
 @jwt_required
 def api_yourPackages():
-    return "yourPackages",200 #render_template("yourPackages.html")
+    return "yourPackages", 200 #render_template("yourPackages.html")
 
 
 # tokens func:
@@ -97,6 +119,7 @@ def refresh():
     resp = make_response(redirect(app.config['BASE_URL'] + '/', 302))
     set_access_cookies(resp, access_token)
     return resp
+
 
 @app.route('/logout', methods=['GET'])
 @jwt_required

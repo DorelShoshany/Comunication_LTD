@@ -21,6 +21,7 @@ class Config(object):
     JWT_TOKEN_LOCATION ='cookies'
     JWT_CSRF_CHECK_FORM = True
 
+
     # mail:
 
     MAIL_SERVER = 'smtp.mailtrap.io'
@@ -30,7 +31,7 @@ class Config(object):
     MAIL_USE_TLS = True
     MAIL_USE_SSL = False
     MAIL_DEFAULT_SENDER = 'dorel@ComunicationLTD.com'
-
+    JWT_COOKIE_CSRF_PROTECT = False
 
     #TODO: use this!
     # CONST:
@@ -38,7 +39,8 @@ class Config(object):
     LENGTH_OF_THE_PASSWORD = 10
     HISTORY_OF_THE_PASSWORDS = 3
     LOGIN_LIMIT_TRYING = 3
-    TITLE_MSG_EMAIL = "Password Recovery - Communication LTD"
+    TITLE_MSG_EMAIL_PASSWORD_RECOVERY = "Password Recovery - Communication LTD"
+    TITLE_MSG_EMAIL_DEFAULT = 'Communication LTD'
 
 '''
 
