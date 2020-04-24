@@ -42,6 +42,17 @@ class Config(object):
     TITLE_MSG_EMAIL_PASSWORD_RECOVERY = "Password Recovery - Communication LTD"
     TITLE_MSG_EMAIL_DEFAULT = 'Communication LTD'
 
+    # consts for routes api :
+    USER_NOT_FOUND = "User not fund "
+    PASSWORD_NOT_CORRECT = "Password not correct "
+    USER_FOUND = "User not fund "
+    PASSWORD_CORRECT = "Password correct "
+    VERIFY_HASH_EMAIL_WITH_DATE_SUCCESS = "verify email success"
+    VERIFY_HASH_EMAIL_WITH_DATE_FAILED = "verify email failed"
+    PASSWORD_CHANGE_SUCCESS = "Password change success "
+    PASSWORD_CHANGE_FAILED = "Password change failed"
+    PASSWORD_IS_COPY_OF_HISTORY = "Password is copy of history "
+
 '''
 
     try:

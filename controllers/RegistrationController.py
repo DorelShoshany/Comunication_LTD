@@ -21,7 +21,7 @@ class RegistrationController():
         user = User(firstName=firstName, lastName=lastName, email=email, password=password, sectorId=sectorId)
         if user_is_valid(user) and password_is_valid(user.password) and sector_id_is_valid(user.sectorId):
             password_encrypt = PasswordEncryption.hash_salt(password=password, salt=None)
-            user.password=password_encrypt
+            user.password = password_encrypt
             return DAL.save_new_user_to_db(user) and DAL.save_user_password_history_to_db(user)
         else:
             return False

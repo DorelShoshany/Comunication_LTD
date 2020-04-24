@@ -1,6 +1,7 @@
 from flask_jwt_extended import create_access_token, jwt_refresh_token_required, get_jwt_identity, set_access_cookies, \
     jwt_required, unset_jwt_cookies, unset_access_cookies, fresh_jwt_required
 
+from config import Config
 from controllers.AuthorizationController import AuthorizationController
 from controllers.PackagesController import PackagesController
 from controllers.PackagesSectorController import PackagesSectorController
@@ -17,29 +18,31 @@ from flask import render_template, request, Response, json, jsonify, make_respon
 def api_changePassword():
     user_id = get_jwt_identity()
     authorizationController = AuthorizationController()
-    if authorizationController.change_password(request, user_id):
+    res_bool, res_msg =  authorizationController.change_password(request, user_id)
+    if res_bool:
         return make_response(redirect(app.config['BASE_URL'] + '/', 302))
     else:
-        return jsonify(message="Change Password failed!"), 401
+        return jsonify(message=res_msg), 401
 
 
 @app.route("/api/passwordRecovery", methods=["POST"])
 def api_passwordRecovery():
     authorizationController = AuthorizationController()
-    user = authorizationController.verify_password_recovery(request)
-    if user:
+    user, res = authorizationController.verify_password_recovery(request)
+    if res is Config.VERIFY_HASH_EMAIL_WITH_DATE_SUCCESS:
         return assign_access_refresh_tokens(user.id, app.config['BASE_URL'] + '/changePassword')
     else:
-        return jsonify(message="Do not found. "), 404
+        return jsonify(message=res), 404
 
 
 @app.route("/api/forgotYourPassword", methods=["POST"])
 def api_forgot_your_password():
     authorizationController = AuthorizationController()
-    if authorizationController.start_password_recovery(request):
+    res_bool, res_msg = authorizationController.start_password_recovery(request)
+    if res_bool:
         return make_response(redirect(app.config['BASE_URL'] + '/passwordRecovery', 302))
     else:
-        return jsonify(message="Do not found email. "), 404
+        return jsonify(message=res_msg), 404
 
 
 @app.route("/api/packagesOfferings" , methods=["GET"])
