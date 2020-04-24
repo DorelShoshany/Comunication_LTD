@@ -3,7 +3,7 @@ from config import Config
 from entities.PackagesSectors import PackagesSectors
 from entities.User import User
 from entities.UserPasswordsHistory import UserPasswordsHistory
-from services import PasswordEncryption
+
 
 
 def save_new_user_to_db (user):
@@ -41,22 +41,12 @@ def save_new_package_to_db (package):
     db.session.commit()
     return True
 
+
 def get_packages_sectors_from_db_by_sectorId(sectorId):
     return PackagesSectors.query.filter_by(id=sectorId)
 
 
-#TODO: remove this def to other python file
-def password_is_copy_of_history(user, enteredPassword):
-    password_history = UserPasswordsHistory.query.filter_by(userId=user.id)
-    n = Config.HISTORY_OF_THE_PASSWORDS
-    if password_history.count() < Config.HISTORY_OF_THE_PASSWORDS:
-        n = password_history.count()
-    for i in range(-n, n-Config.HISTORY_OF_THE_PASSWORDS):
-        salt_from_storage = password_history[i].password[:Config.LENGTH_OF_THE_SALT]  # 32 is the length of the salt
-        key_from_storage = password_history[i].password[Config.LENGTH_OF_THE_SALT:]
-        enteredPassword_hash_salt = PasswordEncryption.hash_salt(enteredPassword, salt_from_storage)
-        if enteredPassword_hash_salt[Config.LENGTH_OF_THE_SALT:] == key_from_storage:
-            return True
-    return False
+def get_UserPasswordsHistory_by_user_id(userID):
+    return UserPasswordsHistory.query.filter_by(userId=userID)
 
 

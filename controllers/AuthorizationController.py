@@ -2,6 +2,7 @@ from config import Config
 from services import EmailService, UserTokenEncryptinoService, PasswordEncryption
 from services.DAL import UserProvider, DAL
 from services.PasswordVerifier import verify_user_password
+from services.Validators import password_is_copy_of_history
 
 
 class AuthorizationController():
@@ -57,7 +58,7 @@ class AuthorizationController():
         else:
             enteredPassword = request.form['password']
         user = UserProvider.get_user_from_db_by_id(user_id)
-        if DAL.password_is_copy_of_history(user, enteredPassword):
+        if password_is_copy_of_history(user, enteredPassword):
             return False, Config.PASSWORD_IS_COPY_OF_HISTORY
         else:
             password_encrypt = PasswordEncryption.hash_salt(password=enteredPassword, salt=None)
@@ -66,4 +67,6 @@ class AuthorizationController():
                 return True, Config.PASSWORD_CHANGE_SUCCESS
             else:
                 return False, Config.PASSWORD_CHANGE_FAILED
+
+
 
