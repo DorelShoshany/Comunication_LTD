@@ -60,32 +60,32 @@ def api_changePassword():
     dict_identity = ast.literal_eval(get_jwt_identity())
     user_id = dict_identity['user']
     authorizationController = AuthorizationController()
-    res_bool, res_msg =  authorizationController.change_password(request, user_id)
-    if res_bool:
+    authorizationResult = authorizationController.change_password(request, user_id)
+    if authorizationResult.isSuccess:
         return make_response(redirect(app.config['BASE_URL'] + '/', 302))
     else:
-        return jsonify(message=res_msg), 401
+        return jsonify(message=authorizationResult.Message), 401
 
 
 @app.route("/api/passwordRecovery", methods=["POST"])
 def api_passwordRecovery():
     authorizationController = AuthorizationController()
-    user, msg = authorizationController.verify_password_recovery(request)
-    if msg is Config.VERIFY_HASH_EMAIL_WITH_DATE_SUCCESS:
+    user, authorizationResult = authorizationController.verify_password_recovery(request)
+    if authorizationResult.isSuccess:
         return assign_access_refresh_tokens(json.dumps({"user" : user.id , roles: Config.ROLE_CHANGE_PASSWORD}),
                                             app.config['BASE_URL'] + '/changePassword')
     else:
-        return jsonify(message=msg), 404
+        return jsonify(message=authorizationResult.Message), 404
 
 
 @app.route("/api/forgotYourPassword", methods=["POST"])
 def api_forgot_your_password():
     authorizationController = AuthorizationController()
-    res_bool, res_msg = authorizationController.password_recovery(request)
-    if res_bool:
+    authorizationResult = authorizationController.password_recovery(request)
+    if authorizationResult.isSuccess:
         return make_response(redirect(app.config['BASE_URL'] + '/passwordRecovery', 302))
     else:
-        return jsonify(message=res_msg), 404
+        return jsonify(message=authorizationResult.Message), 404
 
 
 @app.route("/api/packagesOfferings", methods=["GET"])

@@ -1,7 +1,7 @@
 from datetime import datetime, timedelta
 from config import Config
 from models.AuthorizationResult import AuthorizationResult
-from services import PasswordEncryption
+from services import PasswordEncryption, UserTokenEncryptinoService, EmailService
 from services.DAL import UserProvider, DAL
 from services.PasswordVerifier import verify_user_password
 
@@ -37,3 +37,14 @@ def was_password_used_in_the_last_given_occurrences(user, enteredPassword, occur
         if enteredPassword_hash_salt[Config.LENGTH_OF_THE_SALT:] == key_from_storage:
             return True
     return False
+
+
+def start_password_recovery_process(email):
+    user = UserProvider.get_user_from_db_by_email(email)
+    if user:
+        header = Config.TITLE_MSG_EMAIL_PASSWORD_RECOVERY
+        body = UserTokenEncryptinoService.hash_email_with_date(email)
+        EmailService.send(email=email, body=body, header=header)
+        return AuthorizationResult(isSuccess=True, Message=Config.USER_FOUND)
+    else:
+        return AuthorizationResult(isSuccess=False, Message=Config.USER_NOT_FOUND)

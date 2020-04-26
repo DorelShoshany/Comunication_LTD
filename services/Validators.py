@@ -1,8 +1,7 @@
 import re
 
 from config import Config
-from services import PasswordEncryption
-from services.DAL import SectorProivder, DAL
+from services.DAL import SectorProivder
 
 
 def sector_id_is_valid(sectorId):
@@ -22,9 +21,11 @@ def password_is_valid(password):
     if len(password) != Config.LENGTH_OF_THE_PASSWORD:
         return False
     elif re.search('[0-9]', password) is None:
-        return False # print("Make sure your password has a number in it")
+       # print("Make sure your password has a number in it")
+        return False
     elif re.search('[A-Z]', password) is None:
-        return False # print("Make sure your password has a capital letter in it")
+       # print("Make sure your password has a capital letter in it")
+        return False
     else:
         return True
 
