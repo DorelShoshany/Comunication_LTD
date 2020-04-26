@@ -8,6 +8,7 @@ from entities.UserPasswordsHistory import UserPasswordsHistory
 
 def save_new_user_to_db (user):
     try:
+        print("save_new_user_to_db ",user.lockEndTime)
         db.session.add(user)
         db.session.commit()
         return True

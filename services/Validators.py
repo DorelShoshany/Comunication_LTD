@@ -29,15 +29,3 @@ def password_is_valid(password):
         return True
 
 
-def was_password_used_in_the_last_given_occurrences(user, enteredPassword, occurrences):
-    password_history = DAL.get_UserPasswordsHistory_by_user_id(user.id)
-    n = occurrences
-    if password_history.count() < occurrences:
-        n = password_history.count()
-    for i in range(-n, n-occurrences):
-        salt_from_storage = password_history[i].password[:Config.LENGTH_OF_THE_SALT]  # 32 is the length of the salt
-        key_from_storage = password_history[i].password[Config.LENGTH_OF_THE_SALT:]
-        enteredPassword_hash_salt = PasswordEncryption.hash_salt(enteredPassword, salt_from_storage)
-        if enteredPassword_hash_salt[Config.LENGTH_OF_THE_SALT:] == key_from_storage:
-            return True
-    return False

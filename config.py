@@ -47,16 +47,18 @@ class Config(object):
     LOGIN_LIMIT_TRYING = 3
     TITLE_MSG_EMAIL_PASSWORD_RECOVERY = "Password Recovery - Communication LTD"
     TITLE_MSG_EMAIL_DEFAULT = 'Communication LTD'
+    USER_LOCK_TIME_IN_MINUTES = datetime.timedelta(minutes=15)
 
     # consts for routes api :
-    USER_NOT_FOUND = "User not fund "
+    USER_NOT_FOUND = "Bad user name or password "
+    USER_IS_LOCKED_UNTIL = "User is locked until "
     PASSWORD_NOT_CORRECT = "Password not correct "
     USER_FOUND = "User not fund "
     PASSWORD_CORRECT = "Password correct "
-    VERIFY_HASH_EMAIL_WITH_DATE_SUCCESS = "verify email success"
-    VERIFY_HASH_EMAIL_WITH_DATE_FAILED = "verify email failed"
+    VERIFY_HASH_EMAIL_WITH_DATE_SUCCESS = "verify email success "
+    VERIFY_HASH_EMAIL_WITH_DATE_FAILED = "verify email failed "
     PASSWORD_CHANGE_SUCCESS = "Password change success "
-    PASSWORD_CHANGE_FAILED = "Password change failed"
+    PASSWORD_CHANGE_FAILED = "Password change failed "
     PASSWORD_WAS_USED_IN_THE_LAST_GIVEN_OCCURRENCES = "password was used in the last given occurrences "
 
 '''

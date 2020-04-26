@@ -10,8 +10,9 @@ from controllers.PackagesController import PackagesController
 from controllers.PackagesSectorController import PackagesSectorController
 from controllers.RegistrationController import RegistrationController
 from controllers.SectorController import SectorController
-from application import app, jwt, mail
+from application import app, jwt
 from flask import render_template, request, Response, json, jsonify, make_response, redirect
+
 #TODO: change all 404,200 to enum
 
 roles = Config.ROLE
@@ -80,7 +81,7 @@ def api_passwordRecovery():
 @app.route("/api/forgotYourPassword", methods=["POST"])
 def api_forgot_your_password():
     authorizationController = AuthorizationController()
-    res_bool, res_msg = authorizationController.start_password_recovery(request)
+    res_bool, res_msg = authorizationController.password_recovery(request)
     if res_bool:
         return make_response(redirect(app.config['BASE_URL'] + '/passwordRecovery', 302))
     else:
@@ -89,6 +90,7 @@ def api_forgot_your_password():
 
 @app.route("/api/packagesOfferings", methods=["GET"])
 @jwt_required
+@basic_role_required
 def api_get_packages_to_buy():
     user_id = get_jwt_identity()
     packagesSectorController = PackagesSectorController()
@@ -127,15 +129,16 @@ def addPackagesSector():
     packagesSectorController.createPackagesSector(request)
     return jsonify(message="Packages for Sector created successfully. "), 201
 
+
 @app.route("/api/login", methods=['POST'])
 def api_login():
-    # TODO: save the attempt to login -> if 3 times blocks him?
     authorizationController = AuthorizationController()
-    user, msg = authorizationController.login(request)
-    if user:
-        return assign_access_refresh_tokens(user.id, app.config['BASE_URL'] + '/yourPackages')
+    user, authorizationResult = authorizationController.login(request)
+    if authorizationResult.isSuccess:
+        return assign_access_refresh_tokens(json.dumps({"user" : user.id , roles: Config.ROLE_BASIC})
+                                            , app.config['BASE_URL'] + '/yourPackages')
     else:
-        return jsonify(message=msg), 404
+        return jsonify(message=authorizationResult.Message), 404
 
 
 @app.route("/api/yourPackages")
@@ -177,6 +180,7 @@ def refresh():
 
 @app.route('/logout', methods=['GET'])
 @jwt_required
+@basic_role_required
 def logout():
     # Revoke Fresh/Non-fresh Access and Refresh tokens
     return unset_jwt(), 302

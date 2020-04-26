@@ -1,6 +1,5 @@
 
 # data base model:
-import datetime
 
 from sqlalchemy import Column, ForeignKey
 from sqlalchemy import DateTime, func, ForeignKey
@@ -19,15 +18,24 @@ class User(db.Model):
     creationDate = db.Column('creationDate', DateTime, default=func.now())
     sectorId = db.Column('sectorId', db.Integer, ForeignKey("Sectors.id"), nullable=True) # We assume user belong only to one sector,
     invalidLoginAttempt = Column(db.Integer)
-    lockEndTime = db.Column('lockEndTime', DateTime)
+    lockEndTime = db.Column("lockEndTime", db.DateTime)
 
-    def __init__(self, email, password, firstName, lastName, sectorId):
+
+    def __init__(self, email, password, firstName, lastName, sectorId, lockEndTime=None):
         self.email = email
         self.password = password
         self.firstName = firstName
         self.lastName = lastName
         self.sectorId = sectorId
+        self.invalidLoginAttempt = 0
+        if lockEndTime != None:
+            self.lockEndTime = lockEndTime
+        else:
+            self.lockEndTime= None
+
 
     def __str__(self):
         return str(self.email)
+
+
 
