@@ -20,7 +20,12 @@ class Config(object):
     JWT_ACCESS_TOKEN_EXPIRES = datetime.timedelta(days=1)
     JWT_TOKEN_LOCATION ='cookies'
     JWT_CSRF_CHECK_FORM = True
-
+    JWT_COOKIE_CSRF_PROTECT = False
+    DAYS_EXPIRES_ACCESS_TOKENS_ROLE_BASIC = 2  # days
+    DAYS_EXPIRES_ACCESS_TOKENS_ROLE_CHANGE_PASSWORD = 15  # minutes
+    ROLE_BASIC = "basic"
+    ROLE_CHANGE_PASSWORD = "change password"
+    ROLE = 'roles'
 
     # mail:
 
@@ -31,7 +36,8 @@ class Config(object):
     MAIL_USE_TLS = True
     MAIL_USE_SSL = False
     MAIL_DEFAULT_SENDER = 'dorel@ComunicationLTD.com'
-    JWT_COOKIE_CSRF_PROTECT = False
+
+    #JWT_ACCESS_TOKEN_EXPIRES =
 
     #TODO: use this!
     # CONST:
@@ -51,7 +57,7 @@ class Config(object):
     VERIFY_HASH_EMAIL_WITH_DATE_FAILED = "verify email failed"
     PASSWORD_CHANGE_SUCCESS = "Password change success "
     PASSWORD_CHANGE_FAILED = "Password change failed"
-    PASSWORD_IS_COPY_OF_HISTORY = "Password is copy of history "
+    PASSWORD_WAS_USED_IN_THE_LAST_GIVEN_OCCURRENCES = "password was used in the last given occurrences "
 
 '''
 

@@ -1,5 +1,4 @@
 from services import PasswordEncryption
-from services.DAL import DAL
 
 from config import Config
 length_of_the_salt = Config.LENGTH_OF_THE_SALT

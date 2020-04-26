@@ -29,12 +29,12 @@ def password_is_valid(password):
         return True
 
 
-def password_is_copy_of_history(user, enteredPassword):
+def was_password_used_in_the_last_given_occurrences(user, enteredPassword, occurrences):
     password_history = DAL.get_UserPasswordsHistory_by_user_id(user.id)
-    n = Config.HISTORY_OF_THE_PASSWORDS
-    if password_history.count() < Config.HISTORY_OF_THE_PASSWORDS:
+    n = occurrences
+    if password_history.count() < occurrences:
         n = password_history.count()
-    for i in range(-n, n-Config.HISTORY_OF_THE_PASSWORDS):
+    for i in range(-n, n-occurrences):
         salt_from_storage = password_history[i].password[:Config.LENGTH_OF_THE_SALT]  # 32 is the length of the salt
         key_from_storage = password_history[i].password[Config.LENGTH_OF_THE_SALT:]
         enteredPassword_hash_salt = PasswordEncryption.hash_salt(enteredPassword, salt_from_storage)

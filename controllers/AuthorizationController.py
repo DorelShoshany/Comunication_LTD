@@ -2,7 +2,7 @@ from config import Config
 from services import EmailService, UserTokenEncryptinoService, PasswordEncryption
 from services.DAL import UserProvider, DAL
 from services.PasswordVerifier import verify_user_password
-from services.Validators import password_is_copy_of_history
+from services.Validators import was_password_used_in_the_last_given_occurrences
 
 
 class AuthorizationController():
@@ -15,11 +15,13 @@ class AuthorizationController():
             email = request.form['email']
             enteredPassword = request.form['password']
         user = UserProvider.get_user_from_db_by_email(email)
-        # TODO: return user is not exist and  verify
-        if verify_user_password(user, enteredPassword):
-            return user
+        if user:
+            if verify_user_password(user, enteredPassword):
+                return user, Config.USER_FOUND
+            else:
+                return None, Config.VERIFY_HASH_EMAIL_WITH_DATE_FAILED
         else:
-            return None
+            return None, Config.USER_NOT_FOUND
 
     # POST: This will generate a token and send to the user email in order
     def start_password_recovery(self, request):
@@ -28,13 +30,13 @@ class AuthorizationController():
         else:
             email = request.form['email']
         user = UserProvider.get_user_from_db_by_email(email)
-        if user is None:
-            return False, Config.USER_NOT_FOUND
-        else:
+        if user:
             header = Config.TITLE_MSG_EMAIL_PASSWORD_RECOVERY
             body = UserTokenEncryptinoService.hash_email_with_date(email)
             EmailService.send(email=email, body=body, header=header)
             return True, Config.USER_FOUND
+        else:
+            return False, Config.USER_NOT_FOUND
 
 
     def verify_password_recovery(self, request):
@@ -58,8 +60,9 @@ class AuthorizationController():
         else:
             enteredPassword = request.form['password']
         user = UserProvider.get_user_from_db_by_id(user_id)
-        if password_is_copy_of_history(user, enteredPassword):
-            return False, Config.PASSWORD_IS_COPY_OF_HISTORY
+        occurrences = Config.HISTORY_OF_THE_PASSWORDS
+        if was_password_used_in_the_last_given_occurrences(user, enteredPassword, occurrences):
+            return False, Config.PASSWORD_WAS_USED_IN_THE_LAST_GIVEN_OCCURRENCES
         else:
             password_encrypt = PasswordEncryption.hash_salt(password=enteredPassword, salt=None)
             user.password = password_encrypt

@@ -18,6 +18,8 @@ class User(db.Model):
     lastName = Column(db.String(45))
     creationDate = db.Column('creationDate', DateTime, default=func.now())
     sectorId = db.Column('sectorId', db.Integer, ForeignKey("Sectors.id"), nullable=True) # We assume user belong only to one sector,
+    invalidLoginAttempt = Column(db.Integer)
+    lockEndTime = db.Column('lockEndTime', DateTime)
 
     def __init__(self, email, password, firstName, lastName, sectorId):
         self.email = email
