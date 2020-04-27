@@ -57,8 +57,7 @@ def basic_role_required(fn):
 @app.route("/api/changePassword", methods=["POST"])
 @change_password_role_required
 def api_changePassword():
-    dict_identity = ast.literal_eval(get_jwt_identity())
-    user_id = dict_identity['user']
+    user_id = get_user_id_from_identity(get_jwt_identity())
     authorizationController = AuthorizationController()
     authorizationResult = authorizationController.change_password(request, user_id)
     if authorizationResult.isSuccess:
@@ -88,11 +87,16 @@ def api_forgot_your_password():
         return jsonify(message=authorizationResult.Message), 404
 
 
+def get_user_id_from_identity(jwt_identity):
+    dict_identity = ast.literal_eval(jwt_identity)
+    return dict_identity['user']
+
+
 @app.route("/api/packagesOfferings", methods=["GET"])
 @jwt_required
 @basic_role_required
 def api_get_packages_to_buy():
-    user_id = get_jwt_identity()
+    user_id = get_user_id_from_identity(get_jwt_identity())
     packagesSectorController = PackagesSectorController()
     res = packagesSectorController.get_all_packages_to_buy_by_sector_id(user_id)
     return jsonify(res), 200
