@@ -60,7 +60,7 @@ class Config(object):
     PASSWORD_CHANGE_SUCCESS = "Password change success "
     PASSWORD_CHANGE_FAILED = "Password change failed "
     PASSWORD_WAS_USED_IN_THE_LAST_GIVEN_OCCURRENCES = "password was used in the last given occurrences "
-
+#TODO open ssl
 '''
 
     try:
