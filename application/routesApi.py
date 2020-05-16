@@ -30,9 +30,6 @@ def change_password_role_required(fn):
     def wrapper(*args, **kwargs):
         verify_jwt_in_request()
         claims = get_jwt_claims()
-        #print(claims)
-        #print(type(claims))
-        #print(claims['roles'] == Config.ROLE_CHANGE_PASSWORD)
         if claims[roles] != Config.ROLE_CHANGE_PASSWORD:
             return jsonify(msg="can't continue without login!"), 403
         else:
@@ -44,9 +41,6 @@ def basic_role_required(fn):
     def wrapper(*args, **kwargs):
         verify_jwt_in_request()
         claims = get_jwt_claims()
-        #print(claims)
-        #print(type(claims))
-        #print(claims['roles'] == Config.ROLE_CHANGE_PASSWORD)
         if claims[roles] == Config.ROLE_CHANGE_PASSWORD:
             return jsonify(msg="can't continue without login!"), 403
         else:
@@ -99,7 +93,8 @@ def api_get_packages_to_buy():
     user_id = get_user_id_from_identity(get_jwt_identity())
     packagesSectorController = PackagesSectorController()
     res = packagesSectorController.get_all_packages_to_buy_by_sector_id(user_id)
-    return jsonify(res), 200
+    #return jsonify([res]), 200
+    return json.dumps([{"name" : "dorel the Queen" , "price": "10"}, {"name" : "dorel2 the Queen" , "price": "11"}]) ,200
 
 
 @app.route("/api/register", methods=['POST'])
@@ -135,12 +130,18 @@ def addPackagesSector():
 
 
 @app.route("/api/login", methods=['POST'])
-def api_login():
+def login():
     authorizationController = AuthorizationController()
     user, authorizationResult = authorizationController.login(request)
     if authorizationResult.isSuccess:
-        return assign_access_refresh_tokens(json.dumps({"user" : user.id , roles: Config.ROLE_BASIC})
-                                            , app.config['BASE_URL'] + '/yourPackages')
+       # resp = assign_access_refresh_tokens(json.dumps({"user" : user.id , roles: Config.ROLE_BASIC})
+        #                                  , app.config['BASE_URL'] + '/yourPackages')
+        expires = datetime.timedelta(days=Config.DAYS_EXPIRES_ACCESS_TOKENS_ROLE_BASIC)
+        access_token = create_access_token(identity=json.dumps({"user" : user.id , roles: Config.ROLE_BASIC}), expires_delta=expires)
+        resp = jsonify({'login': True})
+        resp.set_cookie('access_token', access_token)
+        set_access_cookies(resp, access_token)
+        return resp, 200
     else:
         return jsonify(message=authorizationResult.Message), 404
 
@@ -149,7 +150,7 @@ def api_login():
 @jwt_required
 @basic_role_required
 def api_yourPackages():
-    return "yourPackages", 200 #render_template("yourPackages.html")
+    return "[{name: 'gold', price:50}, {name: 'silver', price:52}, {name: 'bronze', price:5}]", 200 #render_template("yourPackages.html")
 
 
 # tokens func:

@@ -5,10 +5,11 @@ import export
 
 class Config(object):
 
-    BASE_URL = 'https://127.0.0.1:5000'  # Running on localhost
 
+    BASE_URL = 'https://127.0.0.1:80'  # Running on localhost
+    SSL_DISABLE = True
+    CORS_HEADERS='Content-Type'
     SECRET_KEY = os.environ.get('SECRET_KEY') or "secret_string"
-
     # DB:
     nameFileDB = "CommunicationLTDDB.db"
     basedir = os.path.dirname(os.path.abspath(__file__))

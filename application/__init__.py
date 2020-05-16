@@ -1,13 +1,12 @@
-from smtplib import SMTP
 
 from flask import Flask
+from flask_cors import  CORS, cross_origin
 from flask_jwt_extended import JWTManager
 from flask_mail import Mail
 
 from config import Config
 from flask_sqlalchemy import SQLAlchemy
 from flask_marshmallow import Marshmallow
-
 
 app = Flask(__name__)
 app.config.from_object(Config)
@@ -16,6 +15,8 @@ db.init_app(app)
 ma = Marshmallow(app)
 jwt = JWTManager(app)
 mail = Mail(app)
+
+
 
 from application import routesHtml, routesApi
 
