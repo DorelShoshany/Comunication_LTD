@@ -5,6 +5,7 @@ import { HomePageComponent } from './components/home-page/home-page.component';
 import { PersonalAreaComponent } from './components/personal-area/personal-area.component';
 import { AuthenticateGuard } from './guards/authenticate.guard';
 import { AnonymousGuard } from './guards/anonymous.guard';
+import { RegistertionFormComponent } from './components/registertion-form/registertion-form.component';
 
 
 
@@ -13,6 +14,7 @@ const routes: Routes = [
   { path: 'home', component: HomePageComponent },
   { path: 'login', component: LoginComponent, canActivate: [AnonymousGuard] },
   { path: 'personal', component: PersonalAreaComponent, canActivate: [AuthenticateGuard] },
+  { path: 'register', component: RegistertionFormComponent }
 ];
 
 

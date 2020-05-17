@@ -98,6 +98,7 @@ def api_get_packages_to_buy():
 
 
 @app.route("/api/register", methods=['POST'])
+
 def api_register():
     registrationController = RegistrationController()
     if registrationController.Register(request):
@@ -113,6 +114,12 @@ def add_sector():
     sectorController.createSector(request)
     return jsonify(message="Sector created successfully. "), 201
 
+
+@app.route("/api/getSectors", methods=['GET'])
+def get_sectors():
+    sectorController = SectorController()
+    sectors = sectorController.get_all_sectors()
+    return jsonify(sectors), 200
 
 #TODO: only user as admin
 @app.route("/api/addPackage", methods=['POST'])

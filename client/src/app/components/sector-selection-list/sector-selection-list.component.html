@@ -1,0 +1,6 @@
+<select *ngIf="sectors != null" [(ngModel)]="selectedSector" (ngModelChange)="valueChanged.emit(selectedSector)"
+  name="sector">
+  <option [ngValue]="undefined" *ngIf="selectedSector == undefined">Select Sector</option>
+  <option *ngFor="let sector of sectors" [ngValue]="sector">{{sector.name}}</option>
+</select>
+<span *ngIf="selectedSector">{{selectedSector.description}}</span>

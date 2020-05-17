@@ -9,6 +9,8 @@ import { HomePageComponent } from './components/home-page/home-page.component';
 import { HttpClientModule } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { UsersPackagesOfferringComponent } from './components/users-packages-offerring/users-packages-offerring.component';
+import { RegistertionFormComponent } from './components/registertion-form/registertion-form.component';
+import { SectorSelectionListComponent } from './components/sector-selection-list/sector-selection-list.component';
 
 @NgModule({
   declarations: [
@@ -16,7 +18,9 @@ import { UsersPackagesOfferringComponent } from './components/users-packages-off
     LoginComponent,
     PersonalAreaComponent,
     HomePageComponent,
-    UsersPackagesOfferringComponent
+    UsersPackagesOfferringComponent,
+    RegistertionFormComponent,
+    SectorSelectionListComponent
   ],
   imports: [
     BrowserModule,

@@ -1,0 +1,25 @@
+<div>
+  <h2>New User Registration</h2>
+  <br>
+  <br>
+  <div class="container">
+    <form name="register">
+
+      <label>First Name</label><br>
+      <input type="text" [(ngModel)]="registerModel.firstName" required name="firstName" /><br>
+      <label>Last Name</label><br>
+      <input type="text" [(ngModel)]="registerModel.lastName" required name="lastName" /><br>
+      <label>Email</label><br>
+      <input type="text" [(ngModel)]="registerModel.email" required name="email" /><br>
+      <label>Password</label><br><br>
+      <input type="password" [(ngModel)]="registerModel.password" required name="password" />
+      <label>Sector</label>
+      <app-sector-selection-list required name="sector" (valueChanged)="registerModel.sectorId = $event.id">
+      </app-sector-selection-list>
+      <button (click)="sendFormRegistetion()">Save</button>
+
+      <div class="error-message">
+        {{errorMessage}}
+      </div>
+
+    </form>
