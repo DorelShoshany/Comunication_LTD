@@ -14,6 +14,12 @@ export class UsersPackagesOfferringComponent implements OnInit {
 
   async ngOnInit() {
     this.offerings = await this.userPackages.getOfferings();
+
   }
+
+  public buyPackage() {
+    console.log("dorel")
+  }
+
 
 }

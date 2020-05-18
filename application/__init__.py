@@ -17,7 +17,6 @@ jwt = JWTManager(app)
 mail = Mail(app)
 
 
-
 from application import routesHtml, routesApi
 
 

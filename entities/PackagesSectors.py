@@ -12,14 +12,15 @@ class PackagesSectors(db.Model):
     id = Column(db.Integer, primary_key=True)
     packageId = db.Column('packageId', db.Integer, ForeignKey("Packages.id"), nullable=True)
     sectorId = db.Column('sectorId', db.Integer, ForeignKey("Sectors.id"), nullable=True)
+    name = db.Column('name', db.Integer, ForeignKey("Packages.name"), nullable=True)
     creationDate = db.Column('creationDate', DateTime, default=func.now())
     price = Column(db.Integer) # we assume each package can be sold in different costs to different sectors
 
-
-    def __init__(self, packageId, sectorId, price):
+    def __init__(self, packageId, sectorId, price, name):
         self.packageId = packageId
         self.sectorId = sectorId
         self.price = price
+        self.name = name
 
     def __str__(self):
         print("PackageId: " + str(self.packageId) + ", SectorId: "+ str(self.sectorId) +", Price:"+ str(self.price))

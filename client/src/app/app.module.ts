@@ -11,6 +11,7 @@ import { FormsModule } from '@angular/forms';
 import { UsersPackagesOfferringComponent } from './components/users-packages-offerring/users-packages-offerring.component';
 import { RegistertionFormComponent } from './components/registertion-form/registertion-form.component';
 import { SectorSelectionListComponent } from './components/sector-selection-list/sector-selection-list.component';
+import { UserPurchasesComponent } from './components/user-purchases/user-purchases.component';
 
 @NgModule({
   declarations: [
@@ -20,7 +21,8 @@ import { SectorSelectionListComponent } from './components/sector-selection-list
     HomePageComponent,
     UsersPackagesOfferringComponent,
     RegistertionFormComponent,
-    SectorSelectionListComponent
+    SectorSelectionListComponent,
+    UserPurchasesComponent
   ],
   imports: [
     BrowserModule,

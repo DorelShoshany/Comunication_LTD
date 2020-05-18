@@ -1,7 +1,20 @@
-<div *ngFor="let offering of offerings">
-  <span>Name</span>
-  {{offering.name}}
-  <br>
-  <span>Price</span>
-  {{offering.price}}
-</div>
+<h2>Packages Offerings</h2>
+<br>
+<br>
+<table class="table table-hover">
+  <thead>
+    <tr>
+      <td>ID</td>
+      <td>Name</td>
+      <td>Price</td>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let offering of offerings">
+      <td> {{offering.id}}</td>
+      <td> {{offering.name}}</td>
+      <td>{{offering.price}}</td>
+      <td><button class="buyButton" (click)="buyPackage()">Buy Package</button></td>
+    </tr>
+  </tbody>
+</table>

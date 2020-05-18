@@ -7,7 +7,8 @@ from flask_jwt_extended import create_access_token, jwt_refresh_token_required, 
 from config import Config
 from controllers.AuthorizationController import AuthorizationController
 from controllers.PackagesController import PackagesController
-from controllers.PackagesSectorController import PackagesSectorController
+from controllers.PackagesSectorController import *
+
 from controllers.RegistrationController import RegistrationController
 from controllers.SectorController import SectorController
 from application import app, jwt
@@ -93,18 +94,41 @@ def api_get_packages_to_buy():
     user_id = get_user_id_from_identity(get_jwt_identity())
     packagesSectorController = PackagesSectorController()
     res = packagesSectorController.get_all_packages_to_buy_by_sector_id(user_id)
-    #return jsonify([res]), 200
-    return json.dumps([{"name" : "dorel the Queen" , "price": "10"}, {"name" : "dorel2 the Queen" , "price": "11"}]) ,200
+    return json.dumps(res), 200
+    #print(jsonify(res))
+    #return json.dumps([{"name" : "dorel the Queen" , "price": "10"}, {"name" : "dorel2 the Queen" , "price": "11"}]) ,200
+
+
+@app.route("/api/buypackage", methods=["POST"])
+@jwt_required
+@basic_role_required
+def api_buy_package():
+    user_id = get_user_id_from_identity(get_jwt_identity())
+    packagesSectorController = PackagesSectorController()
+    if packagesSectorController.add_purchase_to_user(user_id=user_id, request=request):
+        return "ok", 200
+    else:
+        return "not ok", 400
+
+
+@app.route("/api/yourPackages", methods=["GET"])
+@jwt_required
+@basic_role_required
+def api_your_packages():
+    user_id = get_user_id_from_identity(get_jwt_identity())
+    packagesSectorController = PackagesSectorController()
+    res = packagesSectorController.get_all_packages_that_user_purchases(user_id)
+    return json.dumps(res), 200
 
 
 @app.route("/api/register", methods=['POST'])
-
 def api_register():
     registrationController = RegistrationController()
     if registrationController.Register(request):
         return jsonify(message="User created successfully. "), 201
     else:
-        return jsonify(message="User created failed. "), 400
+        resp = jsonify({'message': "User created failed. "})
+        return resp, 400
 
 
 #TODO: only user as admin
@@ -128,12 +152,13 @@ def add_package():
     packagesController.createPackages(request)
     return jsonify(message="Package created successfully. "), 201
 
+
 #TODO: only user as admin
 @app.route("/api/addPackagesSector", methods=['POST'])
 def addPackagesSector():
     packagesSectorController = PackagesSectorController()
     packagesSectorController.createPackagesSector(request)
-    return jsonify(message="Packages for Sector created successfully. "), 201
+    return jsonify(message="Packages for Sector created successfully. "), 200
 
 
 @app.route("/api/login", methods=['POST'])
@@ -152,12 +177,6 @@ def login():
     else:
         return jsonify(message=authorizationResult.Message), 404
 
-
-@app.route("/api/yourPackages")
-@jwt_required
-@basic_role_required
-def api_yourPackages():
-    return "[{name: 'gold', price:50}, {name: 'silver', price:52}, {name: 'bronze', price:5}]", 200 #render_template("yourPackages.html")
 
 
 # tokens func:

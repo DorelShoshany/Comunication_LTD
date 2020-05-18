@@ -13,4 +13,12 @@ export class UserPackagesService {
     const url = '/api/packagesOfferings';
     return await this.httpClient.get<PackageOfferring[]>(url).toPromise();
   }
+
+  public async getPackagesPurchases(): Promise<PackageOfferring[]> {
+    const url = '/api/yourPackages';
+    return await this.httpClient.get<PackageOfferring[]>(url).toPromise();
+  }
+
+
+
 }

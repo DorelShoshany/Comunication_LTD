@@ -17,9 +17,10 @@
       <app-sector-selection-list required name="sector" (valueChanged)="registerModel.sectorId = $event.id">
       </app-sector-selection-list>
       <button (click)="sendFormRegistetion()">Save</button>
-
+      <div>{{ error }}</div>
       <div class="error-message">
         {{errorMessage}}
+
       </div>
 
     </form>

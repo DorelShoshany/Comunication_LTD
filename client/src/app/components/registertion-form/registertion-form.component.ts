@@ -10,7 +10,7 @@ import { Router } from '@angular/router';
 })
 export class RegistertionFormComponent implements OnInit {
   public registerModel = new RegisterModel();
-
+  public error = "err";
   public errorMessage = '';
 
   constructor(private httpClient: HttpClient,
@@ -27,12 +27,18 @@ export class RegistertionFormComponent implements OnInit {
     formData.append("email", this.registerModel.email);
     formData.append("password", this.registerModel.password);
     formData.append("sectorId", this.registerModel.sectorId);
-    try {
-      await this.httpClient.post(url, formData).toPromise();
-      this.router.navigate(['personal']);
-    } catch {
-      this.errorMessage = "User name or password is incorrect";
-    }
+    //  try {
+    this.httpClient.post(url, formData).subscribe(success => {
+      console.log(success);
+    }, error => { // second parameter is to listen for error
+      console.log(error.message);
+      this.error = error.message;
+    });
+    //this.router.navigate(['personal']);
+    //  } catch (err) {
+    //this.msg = err;
+    //    this.errorMessage = "User name or password is incorrect";
+    //  }
 
   }
 }

@@ -8,6 +8,4 @@ def get_sector_by_id(sectorId):
 
 
 def get_sectors_from_db():
-    sectors = Sectors.query.all()
-    sectorViewModel = SectorViewModel(many=True)
-    return sectorViewModel.dump(sectors)
+    return Sectors.query.all()
