@@ -77,7 +77,7 @@ def api_forgot_your_password():
     authorizationController = AuthorizationController()
     authorizationResult = authorizationController.password_recovery(request)
     if authorizationResult.isSuccess:
-        return make_response(redirect(app.config['BASE_URL'] + '/passwordRecovery', 302))
+        return json.dumps({"msg":"email send successfully"}), 200
     else:
         return jsonify(message=authorizationResult.Message), 404
 
