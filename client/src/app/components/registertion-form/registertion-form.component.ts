@@ -19,27 +19,56 @@ export class RegistertionFormComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  public async sendFormRegistetion() {
-    const url = "/api/register";
-    const formData = new FormData()
-    formData.append("firstName", this.registerModel.firstName);
-    formData.append("lastName", this.registerModel.lastName);
-    formData.append("email", this.registerModel.email);
-    formData.append("password", this.registerModel.password);
-    formData.append("sectorId", this.registerModel.sectorId);
-    //  try {
-    this.httpClient.post(url, formData).subscribe(success => {
-      console.log(success);
-    }, error => { // second parameter is to listen for error
-      console.log(error.message);
-      this.error = error.message;
-    });
-    //this.router.navigate(['personal']);
-    //  } catch (err) {
-    //this.msg = err;
-    //    this.errorMessage = "User name or password is incorrect";
-    //  }
+
+  public async isFormValid() {
+    if (this.registerModel.firstName.length == 0) {
+      await alert("Please enter first name");
+      return await false;
+    }
+    else if (this.registerModel.lastName.length == 0) {
+      alert("Please enter last name");
+      return false;
+    }
+    else if (this.registerModel.password.length == 0) {
+      alert("Please enter last name");
+      return false;
+    }
+    else if (this.registerModel.password.length == 0) {
+      alert("Please enter last name");
+      return false;
+    }
+    else if (this.registerModel.sectorId == null) {
+      alert("Please select sector");
+      return false;
+    }
+    else if (this.registerModel.password) {
+      alert("Please select sector");
+      return false;
+    }
+    else {
+      return await true;
+    }
 
   }
-}
 
+  public async sendFormRegistetion() {
+    try {
+      const url = "/api/register";
+      const formData = new FormData()
+      formData.append("firstName", this.registerModel.firstName);
+      formData.append("lastName", this.registerModel.lastName);
+      formData.append("email", this.registerModel.email);
+      formData.append("password", this.registerModel.password);
+      formData.append("sectorId", this.registerModel.sectorId);
+
+      await this.httpClient.post(url, formData, {
+        responseType: 'json',
+      }).toPromise();
+      this.router.navigate(['personal']);
+    }
+    catch (err) {
+      this.errorMessage = err.error;
+    }
+  }
+
+}

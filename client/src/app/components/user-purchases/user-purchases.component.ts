@@ -8,11 +8,22 @@ import { UserPackagesService } from 'src/app/services/user-packages.service';
   styleUrls: ['./user-purchases.component.scss']
 })
 export class UserPurchasesComponent implements OnInit {
+  public errorMessage = "";
   public packages: PackageOfferring[];
-  constructor(private userPackages: UserPackagesService) { }
+
+  constructor(private userPackages: UserPackagesService) {
+    this.loadUserPackages();
+  }
 
   async ngOnInit() {
-    this.packages = await this.userPackages.getPackagesPurchases();
-
   }
+
+  private loadUserPackages() {
+    this.userPackages.getPackagesPurchases()
+      .subscribe(packages => {
+        this.packages = packages;
+      }, err => this.errorMessage = err.error);
+  }
+
+
 }

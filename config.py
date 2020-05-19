@@ -44,7 +44,7 @@ class Config(object):
     #TODO: use this!
     # CONST:
     LENGTH_OF_THE_SALT = 32
-    LENGTH_OF_THE_PASSWORD = 7
+    LENGTH_OF_THE_PASSWORD = 10
     HISTORY_OF_THE_PASSWORDS = 3
     LOGIN_LIMIT_TRYING = 3
     TITLE_MSG_EMAIL_PASSWORD_RECOVERY = "Password Recovery - Communication LTD"

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { UserPackagesService } from 'src/app/services/user-packages.service';
 import { PackageOfferring } from 'src/app/models/package-offerring';
 
@@ -10,6 +10,7 @@ import { PackageOfferring } from 'src/app/models/package-offerring';
 export class UsersPackagesOfferringComponent implements OnInit {
   public offerings: PackageOfferring[];
   public errorMessage = '';
+
   constructor(private userPackages: UserPackagesService) { }
 
   async ngOnInit() {
@@ -18,14 +19,19 @@ export class UsersPackagesOfferringComponent implements OnInit {
     }
     catch (err) {
       this.errorMessage = err.error;
-
     }
-
-
   }
 
-  public buyPackage() {
-    console.log("dorel")
+  public async buyPackage(packageOffer: PackageOfferring) {
+    try {
+      const isConfirm = confirm(`you are about to buy ${packageOffer.name} of ${packageOffer.price}, are you sure?`);
+      if (isConfirm) {
+        await this.userPackages.postPackage(packageOffer.id);
+      }
+    }
+    catch (err) {
+      this.errorMessage = err.error;
+    }
   }
 
 

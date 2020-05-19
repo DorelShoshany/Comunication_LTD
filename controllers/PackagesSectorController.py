@@ -40,9 +40,9 @@ class PackagesSectorController():
 
     def add_purchase_to_user(self, user_id, request):
         if request.is_json:
-            packagesSectorsId = request.json['packagesSectorsId']
+            packagesSectorsId = request.json['id']
         else:
-            packagesSectorsId = request.form['packagesSectorsId']
+            packagesSectorsId = request.form['id']
         packagesSectors = PackagesSectorsProvider.get_packages_sector_by_id(packagesSectorsId)
         userPurchases = UserPurchases(user_id=(int)(user_id), packagesSectorsId=packagesSectorsId,
                                       price=packagesSectors.price, name=packagesSectors.name)

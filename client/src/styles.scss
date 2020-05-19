@@ -218,6 +218,11 @@ img:hover {
   100% {
     transform: translate(1px, -2px) rotate(-1deg);
   }
+}
 
-
+.decriptonForPassword {
+  display: inline;
+  color: cornflowerblue;
+  padding: 5px;
+  font-size: 14px;
 }

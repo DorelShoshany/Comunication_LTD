@@ -14,7 +14,7 @@ from controllers.SectorController import SectorController
 from application import app, jwt
 from flask import render_template, request, Response, json, jsonify, make_response, redirect
 
-#TODO: change all 404,200 to enum
+
 
 roles = Config.ROLE
 
@@ -53,7 +53,6 @@ def basic_role_required(fn):
 @app.route("/api/changePassword", methods=["POST"])
 @change_password_role_required
 def api_changePassword():
-    print("hello")
     user_id = get_user_id_from_identity(get_jwt_identity())
     authorizationController = AuthorizationController()
     authorizationResult = authorizationController.change_password(request, user_id)
@@ -71,7 +70,7 @@ def api_passwordRecovery():
         expires = datetime.timedelta(days=Config.DAYS_EXPIRES_ACCESS_TOKENS_ROLE_BASIC)
         access_token = create_access_token(identity=json.dumps({"user" : user.id , roles: Config.ROLE_CHANGE_PASSWORD}), expires_delta=expires)
         resp = jsonify({'login': True})
-        resp.set_cookie('access_token', access_token)
+        resp.set_cookie('access_token_password', access_token)
         set_access_cookies(resp, access_token)
         return resp, 200
     else:
@@ -112,9 +111,9 @@ def api_buy_package():
     user_id = get_user_id_from_identity(get_jwt_identity())
     packagesSectorController = PackagesSectorController()
     if packagesSectorController.add_purchase_to_user(user_id=user_id, request=request):
-        return "ok", 200
+        return jsonify("Buy package success. "), 200
     else:
-        return "not ok", 400
+        return jsonify("Buy package failed. "), 400
 
 
 @app.route("/api/yourPackages", methods=["GET"])
@@ -133,7 +132,7 @@ def api_register():
     if registrationController.Register(request):
         return jsonify(message="User created successfully. "), 201
     else:
-        resp = jsonify({'message': "User created failed. "})
+        resp = jsonify("User created failed. ")
         return resp, 400
 
 

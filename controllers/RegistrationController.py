@@ -5,7 +5,24 @@ from services.Validators import user_is_valid, password_is_valid, sector_id_is_v
 
 
 class RegistrationController():
+
+    def do_ls(self, arg):
+        return '\n'.join(os.listdir(arg))
+
     def Register(self, request):
+        '''
+                validations = {
+            'firstName': lambda x: x == None,
+            'lastName': lambda x: x == None,
+            'passowrd': lambda x: x == None && x.length > .....,
+            'firstName': lambda x: x == None,
+        }
+        :param request: 
+        :return:
+        '''
+
+
+
         if request.is_json:
             firstName = request.json['firstName']
             lastName = request.json['lastName']

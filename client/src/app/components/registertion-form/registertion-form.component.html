@@ -1,26 +1,29 @@
 <div>
   <h2>New User Registration</h2>
+
   <br>
   <br>
   <div class="container">
     <form name="register">
 
       <label>First Name</label><br>
-      <input type="text" [(ngModel)]="registerModel.firstName" required name="firstName" /><br>
+      <input id="firstName" type="text" [(ngModel)]="registerModel.firstName" name="firstName" class="form-control"
+        required minlength="4" #firstName="ngModel" required /><br>
       <label>Last Name</label><br>
-      <input type="text" [(ngModel)]="registerModel.lastName" required name="lastName" /><br>
+      <input type="text" [(ngModel)]="registerModel.lastName" required name="lastName" #lastName="ngModel" /><br>
       <label>Email</label><br>
-      <input type="text" [(ngModel)]="registerModel.email" required name="email" /><br>
+      <input type="text" [(ngModel)]="registerModel.email" required name="email" #email="ngModel" /><br>
       <label>Password</label><br><br>
-      <input type="password" [(ngModel)]="registerModel.password" required name="password" />
-      <label>Sector</label>
+      <div class=decriptonForPassword>The password must contain lowercase letters (a-z), uppercase letters (A-Z),
+        numbers (0-9), symbols (#@$%) And Password length should be 10. </div>
+      <input type="password" [(ngModel)]="registerModel.password" required name="password" #password="ngModel" />
+      <label>Sector</label><br><br>
       <app-sector-selection-list required name="sector" (valueChanged)="registerModel.sectorId = $event.id">
       </app-sector-selection-list>
-      <button (click)="sendFormRegistetion()">Save</button>
+      <button (click)="sendFormRegistetion()" [disabled]="firstName.errors?.required || lastName.errors?.required || email.errors?.required ||
+        password.errors?.required">Save</button>
       <div>{{ error }}</div>
       <div class="error-message">
         {{errorMessage}}
-
       </div>
-
     </form>
