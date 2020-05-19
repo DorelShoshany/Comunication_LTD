@@ -9,11 +9,18 @@ import { PackageOfferring } from 'src/app/models/package-offerring';
 })
 export class UsersPackagesOfferringComponent implements OnInit {
   public offerings: PackageOfferring[];
-
+  public errorMessage = '';
   constructor(private userPackages: UserPackagesService) { }
 
   async ngOnInit() {
-    this.offerings = await this.userPackages.getOfferings();
+    try {
+      this.offerings = await this.userPackages.getOfferings();
+    }
+    catch (err) {
+      this.errorMessage = err.error;
+
+    }
+
 
   }
 

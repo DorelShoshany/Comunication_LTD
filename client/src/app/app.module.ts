@@ -12,6 +12,9 @@ import { UsersPackagesOfferringComponent } from './components/users-packages-off
 import { RegistertionFormComponent } from './components/registertion-form/registertion-form.component';
 import { SectorSelectionListComponent } from './components/sector-selection-list/sector-selection-list.component';
 import { UserPurchasesComponent } from './components/user-purchases/user-purchases.component';
+import { ForgetPasswordComponent } from './components/forget-password/forget-password.component';
+import { PasswordRecoveryComponent } from './components/password-recovery/password-recovery.component';
+import { ChangePasswordComponent } from './components/change-password/change-password.component';
 
 @NgModule({
   declarations: [
@@ -22,7 +25,10 @@ import { UserPurchasesComponent } from './components/user-purchases/user-purchas
     UsersPackagesOfferringComponent,
     RegistertionFormComponent,
     SectorSelectionListComponent,
-    UserPurchasesComponent
+    UserPurchasesComponent,
+    ForgetPasswordComponent,
+    PasswordRecoveryComponent,
+    ChangePasswordComponent
   ],
   imports: [
     BrowserModule,

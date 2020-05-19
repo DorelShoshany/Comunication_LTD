@@ -59,7 +59,6 @@ sqlparse==0.3.1
 tensorboardX==2.0
 thrift==0.13.0
 tqdm==4.42.0
-triangle==20200424
 urllib3==1.25.7
 Werkzeug==0.16.0
 WTForms==2.2.1

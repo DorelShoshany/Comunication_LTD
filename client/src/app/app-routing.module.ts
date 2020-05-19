@@ -6,6 +6,9 @@ import { PersonalAreaComponent } from './components/personal-area/personal-area.
 import { AuthenticateGuard } from './guards/authenticate.guard';
 import { AnonymousGuard } from './guards/anonymous.guard';
 import { RegistertionFormComponent } from './components/registertion-form/registertion-form.component';
+import { ForgetPasswordComponent } from './components/forget-password/forget-password.component';
+import { PasswordRecoveryComponent } from './components/password-recovery/password-recovery.component';
+import { ChangePasswordComponent } from './components/change-password/change-password.component';
 
 
 
@@ -14,7 +17,13 @@ const routes: Routes = [
   { path: 'home', component: HomePageComponent },
   { path: 'login', component: LoginComponent, canActivate: [AnonymousGuard] },
   { path: 'personal', component: PersonalAreaComponent, canActivate: [AuthenticateGuard] },
-  { path: 'register', component: RegistertionFormComponent }
+  { path: 'register', component: RegistertionFormComponent },
+  { path: 'forgotYourPassword', component: ForgetPasswordComponent },
+  { path: 'passwordRecovery', component: PasswordRecoveryComponent },
+  { path: 'changePassword', component: ChangePasswordComponent }
+
+
+
 ];
 
 

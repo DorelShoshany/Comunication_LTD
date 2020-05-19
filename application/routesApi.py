@@ -43,7 +43,8 @@ def basic_role_required(fn):
         verify_jwt_in_request()
         claims = get_jwt_claims()
         if claims[roles] == Config.ROLE_CHANGE_PASSWORD:
-            return jsonify(msg="can't continue without login!"), 403
+            return jsonify("Can't continue without login!"), 403
+        #TODO: change all the msg to consts + without msg=
         else:
             return fn(*args, **kwargs)
     return wrapper
@@ -52,11 +53,12 @@ def basic_role_required(fn):
 @app.route("/api/changePassword", methods=["POST"])
 @change_password_role_required
 def api_changePassword():
+    print("hello")
     user_id = get_user_id_from_identity(get_jwt_identity())
     authorizationController = AuthorizationController()
     authorizationResult = authorizationController.change_password(request, user_id)
     if authorizationResult.isSuccess:
-        return make_response(redirect(app.config['BASE_URL'] + '/', 302))
+        return json.dumps({"msg":"Password changed successfully"}), 200
     else:
         return jsonify(message=authorizationResult.Message), 401
 
@@ -66,8 +68,12 @@ def api_passwordRecovery():
     authorizationController = AuthorizationController()
     user, authorizationResult = authorizationController.verify_password_recovery(request)
     if authorizationResult.isSuccess:
-        return assign_access_refresh_tokens(json.dumps({"user" : user.id , roles: Config.ROLE_CHANGE_PASSWORD}),
-                                            app.config['BASE_URL'] + '/changePassword')
+        expires = datetime.timedelta(days=Config.DAYS_EXPIRES_ACCESS_TOKENS_ROLE_BASIC)
+        access_token = create_access_token(identity=json.dumps({"user" : user.id , roles: Config.ROLE_CHANGE_PASSWORD}), expires_delta=expires)
+        resp = jsonify({'login': True})
+        resp.set_cookie('access_token', access_token)
+        set_access_cookies(resp, access_token)
+        return resp, 200
     else:
         return jsonify(message=authorizationResult.Message), 404
 
