@@ -129,10 +129,11 @@ def api_your_packages():
 @app.route("/api/register", methods=['POST'])
 def api_register():
     registrationController = RegistrationController()
-    if registrationController.Register(request):
-        return jsonify(message="User created successfully. "), 201
+    res = registrationController.Register(request)
+    if res.isSuccess:
+        return jsonify(res.Message), 201
     else:
-        resp = jsonify("User created failed. ")
+        resp = jsonify(res.Message)
         return resp, 400
 
 

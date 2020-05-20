@@ -20,37 +20,6 @@ export class RegistertionFormComponent implements OnInit {
   }
 
 
-  public async isFormValid() {
-    if (this.registerModel.firstName.length == 0) {
-      await alert("Please enter first name");
-      return await false;
-    }
-    else if (this.registerModel.lastName.length == 0) {
-      alert("Please enter last name");
-      return false;
-    }
-    else if (this.registerModel.password.length == 0) {
-      alert("Please enter last name");
-      return false;
-    }
-    else if (this.registerModel.password.length == 0) {
-      alert("Please enter last name");
-      return false;
-    }
-    else if (this.registerModel.sectorId == null) {
-      alert("Please select sector");
-      return false;
-    }
-    else if (this.registerModel.password) {
-      alert("Please select sector");
-      return false;
-    }
-    else {
-      return await true;
-    }
-
-  }
-
   public async sendFormRegistetion() {
     try {
       const url = "/api/register";
