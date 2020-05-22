@@ -2,14 +2,14 @@
   <h2>Login Page</h2>
   <br>
   <br>
-  <form name="login">
+
     <label>Email</label><br>
     <input type="email" [(ngModel)]="email" /><br>
     <label>Password</label><br><br>
     <input type="password" [(ngModel)]="password" name="password" />
     <button (click)="login()">Login</button>
-    {{errorMessage}}
-  </form>
+    <div class="errorMessage">{{ errorMessage}}</div>
+
 
 </div>
 <p>Forgot your password? <a [routerLink]="['/forgotYourPassword']"> Click Here</a></p>

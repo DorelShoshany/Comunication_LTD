@@ -9,7 +9,8 @@
       <li class="nav-item"><a class="nav-link" routerLink="login">Login</a></li>
       <li class="nav-item"><a class="nav-link" routerLink="register">Register</a></li>
       <li class="nav-item"><a class="nav-link" [routerLink]="['/personal']"
-          *ngIf="authentication.isAuthenticated()">Personal</a></li>
+          *ngIf="authentication.isAuthenticated()">Personal - Area</a></li>
+      <li class="nav-item"><a class="nav-link" routerLink="logout">Logout</a></li>
     </ul>
   </div>
 </nav>

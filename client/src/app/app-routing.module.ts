@@ -9,6 +9,7 @@ import { RegistertionFormComponent } from './components/registertion-form/regist
 import { ForgetPasswordComponent } from './components/forget-password/forget-password.component';
 import { PasswordRecoveryComponent } from './components/password-recovery/password-recovery.component';
 import { ChangePasswordComponent } from './components/change-password/change-password.component';
+import { LogoutComponent } from './components/logout/logout.component';
 
 
 
@@ -20,7 +21,8 @@ const routes: Routes = [
   { path: 'register', component: RegistertionFormComponent },
   { path: 'forgotYourPassword', component: ForgetPasswordComponent },
   { path: 'passwordRecovery', component: PasswordRecoveryComponent },
-  { path: 'changePassword', component: ChangePasswordComponent }
+  { path: 'changePassword', component: ChangePasswordComponent },
+  { path: 'logout', component: LogoutComponent }
 
 
 

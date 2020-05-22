@@ -10,7 +10,7 @@ import { AuthenticationService } from 'src/app/services/authentication.service';
 })
 export class LoginComponent implements OnInit {
   public email;
-  public password;
+  public password = "";
   public errorMessage = '';
 
   constructor(private authenticationService: AuthenticationService) {
@@ -22,8 +22,8 @@ export class LoginComponent implements OnInit {
   public async login() {
     try {
       await this.authenticationService.login(this.email, this.password);
-    } catch {
-      this.errorMessage = "User name or password is incorrect";
+    } catch (err) {
+      this.errorMessage = err.error;
     }
   }
 

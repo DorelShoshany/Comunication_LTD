@@ -23,9 +23,9 @@ def sector_id_is_valid(sectorId):
 
 def user_is_valid(user):
     if valid_email(user.email):
-        return AuthorizationResult(isSuccess=True, Message="Email is valid")
+        return AuthorizationResult(isSuccess=True, Message=Config.EMAIL_IS_VALID)
     else:
-        return AuthorizationResult(isSuccess=False, Message="Email is not valid")
+        return AuthorizationResult(isSuccess=False, Message=Config.EMAIL_IS_NOT_VALID)
 
 
 def valid_email(email):

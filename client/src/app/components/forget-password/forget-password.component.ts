@@ -11,8 +11,8 @@ import { HttpClient } from '@angular/common/http';
   styleUrls: ['./forget-password.component.scss']
 })
 export class ForgetPasswordComponent implements OnInit {
-  public email;
-  public errorMessage;
+  public email = "";
+  public errorMessage = "";
 
   constructor(private passwordRecoveryServiceService: PasswordRecoveryServiceService) {
   }
@@ -23,8 +23,8 @@ export class ForgetPasswordComponent implements OnInit {
   public async askForPasswordRecovery() {
     try {
       await this.passwordRecoveryServiceService.askForPasswordRecovery(this.email);
-    } catch {
-      this.errorMessage = "Email is incorrect";
+    } catch (err) {
+      this.errorMessage = err.error;
     }
   }
 

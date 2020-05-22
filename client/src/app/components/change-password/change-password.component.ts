@@ -8,7 +8,7 @@ import { PasswordRecoveryServiceService } from 'src/app/services/password-recove
 })
 
 export class ChangePasswordComponent implements OnInit {
-  public password;
+  public password = "";
   public errorMessage;
 
   constructor(private passwordRecoveryServiceService: PasswordRecoveryServiceService) { }
@@ -20,8 +20,8 @@ export class ChangePasswordComponent implements OnInit {
   public async changePassword() {
     try {
       await this.passwordRecoveryServiceService.postChangePassword(this.password);
-    } catch {
-      this.errorMessage = "password shuld be ";
+    } catch (err) {
+      this.errorMessage = err.error;
     }
   }
 

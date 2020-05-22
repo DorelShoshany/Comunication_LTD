@@ -1,10 +1,9 @@
 import datetime
 import os
-
 import export
 
-class Config(object):
 
+class Config(object):
 
     BASE_URL = 'https://127.0.0.1:80'  # Running on localhost
     SSL_DISABLE = True
@@ -22,7 +21,7 @@ class Config(object):
     JWT_TOKEN_LOCATION ='cookies'
     JWT_CSRF_CHECK_FORM = True
     JWT_COOKIE_CSRF_PROTECT = False
-    DAYS_EXPIRES_ACCESS_TOKENS_ROLE_BASIC = 2  # days
+    TIME_EXPIRES_ACCESS_TOKENS_ROLE_BASIC = 2  # days
     DAYS_EXPIRES_ACCESS_TOKENS_ROLE_CHANGE_PASSWORD = 15  # minutes
     ROLE_BASIC = "basic"
     ROLE_CHANGE_PASSWORD = "change password"
@@ -41,7 +40,6 @@ class Config(object):
 
     #JWT_ACCESS_TOKEN_EXPIRES =
 
-    #TODO: use this!
     # CONST:
     LENGTH_OF_THE_SALT = 32
     LENGTH_OF_THE_PASSWORD = 10
@@ -52,17 +50,21 @@ class Config(object):
     USER_LOCK_TIME_IN_MINUTES = datetime.timedelta(minutes=15)
 
     # consts for routes api :
-    USER_NOT_FOUND = "Bad user name or password "
+    BAD_USER_NAME_OR_PASSWORD = "Bad user name or password "
     USER_IS_LOCKED_UNTIL = "User is locked until "
     PASSWORD_NOT_CORRECT = "Password not correct "
-    USER_FOUND = "User not fund "
+    USER_NOT_FOUND = "User not fund "
     PASSWORD_CORRECT = "Password correct "
-    VERIFY_HASH_EMAIL_WITH_DATE_SUCCESS = "verify email success "
-    VERIFY_HASH_EMAIL_WITH_DATE_FAILED = "verify email failed "
+    VERIFY_HASH_EMAIL_WITH_DATE_SUCCESS = "Success Verify your details "
+    VERIFY_HASH_EMAIL_WITH_DATE_FAILED = "Failed Verify your details "
     PASSWORD_CHANGE_SUCCESS = "Password change success "
     PASSWORD_CHANGE_FAILED = "Password change failed "
+    EMAIL_IS_NOT_VALID = "Email is not valid"
+    EMAIL_IS_VALID = "Email is valid"
     PASSWORD_WAS_USED_IN_THE_LAST_GIVEN_OCCURRENCES = "password was used in the last given occurrences "
-#TODO open ssl
+    MSG_FOR_ROLE_REQUIRED = "can't continue without login!"
+
+
 '''
 
     try:

@@ -8,7 +8,7 @@ import { PasswordRecoveryServiceService } from 'src/app/services/password-recove
 })
 export class PasswordRecoveryComponent implements OnInit {
   public email;
-  public token;
+  public token = "";
   public errorMessage;
 
   constructor(private passwordRecoveryServiceService: PasswordRecoveryServiceService) { }
@@ -19,8 +19,8 @@ export class PasswordRecoveryComponent implements OnInit {
   public async postPasswordRecovery() {
     try {
       await this.passwordRecoveryServiceService.postPasswordRecovery(this.email, this.token);
-    } catch {
-      this.errorMessage = "Email or token is incorrect";
+    } catch (err) {
+      this.errorMessage = err.error;
     }
   }
 

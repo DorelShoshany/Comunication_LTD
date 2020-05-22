@@ -15,6 +15,7 @@ import { UserPurchasesComponent } from './components/user-purchases/user-purchas
 import { ForgetPasswordComponent } from './components/forget-password/forget-password.component';
 import { PasswordRecoveryComponent } from './components/password-recovery/password-recovery.component';
 import { ChangePasswordComponent } from './components/change-password/change-password.component';
+import { LogoutComponent } from './components/logout/logout.component';
 
 @NgModule({
   declarations: [
@@ -28,7 +29,8 @@ import { ChangePasswordComponent } from './components/change-password/change-pas
     UserPurchasesComponent,
     ForgetPasswordComponent,
     PasswordRecoveryComponent,
-    ChangePasswordComponent
+    ChangePasswordComponent,
+    LogoutComponent
   ],
   imports: [
     BrowserModule,
