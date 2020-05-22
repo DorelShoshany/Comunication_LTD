@@ -10,7 +10,7 @@ from services.Validators import user_is_valid, password_is_valid, sector_id_is_v
 
 class RegistrationController():
 
-    def Register(self, request):
+    def register(self, request):
         register_form = request.json if request.is_json else request.form
         register_dict = dict(register_form)
         form_register_fields = ["firstName", 'lastName', 'email', 'password', 'sectorId']

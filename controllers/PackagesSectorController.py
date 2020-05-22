@@ -7,24 +7,26 @@ from entities.UserPurchases import UserPurchases
 from services.DAL import DAL, PackagesSectorsProvider
 from services.DAL.DAL import get_packages_sectors_from_db_by_sector_id
 from services.DAL.UserProvider import get_user_from_db_by_id
-
-
+from services.Validators import form_is_full
 
 
 class PackagesSectorController():
-    def createPackagesSector(self, request):
-        if request.is_json:
-            packageId = request.json['packageId']
-            sectorId = request.json['sectorId']
-            price = request.json['price']
-            name = request.json['name']
-        else:
-            packageId = request.form['packageId']
-            sectorId = request.form['sectorId']
-            price = request.form['price']
-            name = request.form['name']
-        packagesSector = PackagesSectors(packageId=packageId, sectorId=sectorId, price=price, name=name)
-        DAL.save_new_packages_sectors_to_db(packagesSector)
+
+    def create_packages_sector(self, request):
+        packages_sector_form = request.json if request.is_json else request.form
+        packages_sector_dict = dict(packages_sector_form)
+        packages_sector_fields = ['packageId','sectorId','price','name']
+        packages_sector_res = form_is_full(packages_sector_dict, packages_sector_fields)
+        if packages_sector_res.isSuccess:
+            packagesSector = PackagesSectors(
+                packageId=packages_sector_dict['packageId'],
+                sectorId=packages_sector_dict['sectorId'],
+                price=packages_sector_dict['price'],
+                name=packages_sector_dict['name'])
+            if DAL.save_new_packages_sectors_to_db(packagesSector):
+                return True
+        return False
+
 
     def get_all_packages_to_buy_by_sector_id(self, userId):
         user = get_user_from_db_by_id(userId)

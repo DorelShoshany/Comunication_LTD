@@ -17,8 +17,6 @@ from flask import render_template, request, Response, json, jsonify, make_respon
 roles = Config.ROLE
 
 
-
-
 @jwt.user_claims_loader
 def add_claims_to_access_token(identity):
     if Config.ROLE_CHANGE_PASSWORD in identity:
@@ -36,7 +34,9 @@ def change_password_role_required(fn):
             return jsonify(Config.MSG_FOR_ROLE_REQUIRED), 403
         else:
             return fn(*args, **kwargs)
+
     return wrapper
+
 
 def basic_role_required(fn):
     @wraps(fn)
@@ -45,9 +45,9 @@ def basic_role_required(fn):
         claims = get_jwt_claims()
         if claims[roles] == Config.ROLE_CHANGE_PASSWORD:
             return jsonify(Config.MSG_FOR_ROLE_REQUIRED), 403
-        #TODO: change all the msg to consts + without msg=
         else:
             return fn(*args, **kwargs)
+
     return wrapper
 
 
@@ -58,7 +58,7 @@ def api_change_password():
     authorizationController = AuthorizationController()
     authorizationResult = authorizationController.change_password(request, user_id)
     if authorizationResult.isSuccess:
-        return json.dumps({"msg":"Password changed successfully"}), 200
+        return json.dumps({"msg": "Password changed successfully"}), 200
     else:
         return jsonify(authorizationResult.Message), 401
 
@@ -69,7 +69,8 @@ def api_password_recovery():
     user, authorizationResult = authorizationController.verify_password_and_token(request)
     if authorizationResult.isSuccess and user is not None:
         expires = datetime.timedelta(days=Config.TIME_EXPIRES_ACCESS_TOKENS_ROLE_BASIC)
-        access_token = create_access_token(identity=json.dumps({"user" : user.id , roles: Config.ROLE_CHANGE_PASSWORD}), expires_delta=expires)
+        access_token = create_access_token(identity=json.dumps({"user": user.id, roles: Config.ROLE_CHANGE_PASSWORD}),
+                                           expires_delta=expires)
         resp = jsonify({'passwordRecovery': True})
         resp.set_cookie('access_token_password', access_token)
         set_access_cookies(resp, access_token)
@@ -83,7 +84,7 @@ def api_forgot_your_password():
     authorizationController = AuthorizationController()
     authorizationResult = authorizationController.password_recovery(request)
     if authorizationResult.isSuccess:
-        return json.dumps({"msg":"email send successfully"}), 200
+        return json.dumps({"msg": "email send successfully"}), 200
     else:
         return jsonify(authorizationResult.Message), 404
 
@@ -128,7 +129,7 @@ def api_your_packages():
 @app.route("/api/register", methods=['POST'])
 def api_register():
     registrationController = RegistrationController()
-    res = registrationController.Register(request)
+    res = registrationController.register(request)
     if res.isSuccess:
         return jsonify(res.Message), 201
     else:
@@ -136,7 +137,7 @@ def api_register():
         return resp, 400
 
 
-#TODO: only user as admin
+# TODO: only user as admin
 @app.route("/api/addSector", methods=['POST'])
 def add_sector():
     sectorController = SectorController()
@@ -153,20 +154,27 @@ def get_sectors():
     sectors = sectorController.get_all_sectors()
     return jsonify(sectors), 200
 
-#TODO: only user as admin
+
+# TODO: only user as admin
 @app.route("/api/addPackage", methods=['POST'])
 def add_package():
     packagesController = PackagesController()
-    packagesController.createPackages(request)
-    return jsonify(message="Package created successfully. "), 201
+    res = packagesController.create_packages(request)
+    if res:
+        return jsonify("Package created successfully. "), 201
+    else:
+        return jsonify("Package created failed. "), 400
 
 
-#TODO: only user as admin
+# TODO: only user as admin
 @app.route("/api/addPackagesSector", methods=['POST'])
 def addPackagesSector():
     packagesSectorController = PackagesSectorController()
-    packagesSectorController.createPackagesSector(request)
-    return jsonify(message="Packages for Sector created successfully. "), 200
+    res = packagesSectorController.create_packages_sector(request)
+    if res:
+        return jsonify("Packages for Sector created successfully. "), 200
+    else:
+        return jsonify("Packages for Sector failed to create . "), 400
 
 
 @app.route("/api/login", methods=['POST'])
@@ -174,10 +182,11 @@ def login():
     authorizationController = AuthorizationController()
     user, authorizationResult = authorizationController.login(request)
     if authorizationResult.isSuccess:
-       # resp = assign_access_refresh_tokens(json.dumps({"user" : user.id , roles: Config.ROLE_BASIC})
+        # resp = assign_access_refresh_tokens(json.dumps({"user" : user.id , roles: Config.ROLE_BASIC})
         #                                  , app.config['BASE_URL'] + '/yourPackages')
         expires = datetime.timedelta(days=Config.TIME_EXPIRES_ACCESS_TOKENS_ROLE_BASIC)
-        access_token = create_access_token(identity=json.dumps({"user" : user.id , roles: Config.ROLE_BASIC}), expires_delta=expires)
+        access_token = create_access_token(identity=json.dumps({"user": user.id, roles: Config.ROLE_BASIC}),
+                                           expires_delta=expires)
         resp = jsonify({'login': True})
         resp.set_cookie('access_token', access_token, expires)
         set_access_cookies(resp, access_token)
@@ -186,11 +195,12 @@ def login():
         return jsonify(authorizationResult.Message), 404
 
 
-
 # tokens func:
+
+
 def assign_access_refresh_tokens(user, url):
     expires = datetime.timedelta(days=Config.TIME_EXPIRES_ACCESS_TOKENS_ROLE_BASIC)
-    access_token = create_access_token(identity=user,expires_delta=expires)
+    access_token = create_access_token(identity=user, expires_delta=expires)
     resp = make_response(redirect(url, 302))
     set_access_cookies(resp, access_token)
     return resp
@@ -199,12 +209,13 @@ def assign_access_refresh_tokens(user, url):
 @jwt.expired_token_loader
 def my_expired_token_callback(expired_token):
     token_type = expired_token['type']
-    #return jsonify({
-     #   'status': 401,
-      #  'sub_status': 42,
-       # 'msg': 'The {} token has expired'.format(token_type)
-    #}), 401
-    return redirect(app.config['BASE_URL'] + '/login', 302)
+    return jsonify({
+       'status': 401,
+      'sub_status': 42,
+     'msg': 'The {} token has expired'.format(token_type)
+     }), 401
+    #return redirect(app.config['BASE_URL'] + '/login', 302)
+
 
 @app.route('/token/refresh', methods=['GET'])
 @jwt_refresh_token_required
@@ -236,7 +247,7 @@ def unset_jwt():
 @jwt.unauthorized_loader
 def unauthorized_callback(callback):
     # No auth header
-    return jsonify("unauthorized_callback" ), 400 #redirect(app.config['BASE_URL'] + '/login', 302)
+    return jsonify("unauthorized_callback"), 400  # redirect(app.config['BASE_URL'] + '/login', 302)
 
 
 @jwt.invalid_token_loader
@@ -251,8 +262,6 @@ def invalid_token_callback(callback):
 def expired_token_callback(callback):
     # Expired auth header
     resp = jsonify({Config.MSG_FOR_ROLE_REQUIRED: True})
-    #resp = make_response(redirect(app.config['BASE_URL'] + '/token/refresh'))
+    # resp = make_response(redirect(app.config['BASE_URL'] + '/token/refresh'))
     unset_access_cookies(resp)
     return resp, 302
-
-
