@@ -5,7 +5,7 @@ from sqlalchemy import Column, ForeignKey
 from sqlalchemy import DateTime, func, ForeignKey
 from application import db
 
-#TODO: add user role 
+#TODO: add user role admin
 
 class User(db.Model):
     __tablename__ = 'User'

@@ -58,7 +58,11 @@ def api_change_password():
     authorizationController = AuthorizationController()
     authorizationResult = authorizationController.change_password(request, user_id)
     if authorizationResult.isSuccess:
-        return json.dumps({"msg": "Password changed successfully"}), 200
+        # remove access_token_password form the browser:
+        resp = jsonify({'Password changed successfully': True})
+        resp.set_cookie('access_token_password', "", expires=0)
+        set_access_cookies(resp, "")
+        return resp, 200
     else:
         return jsonify(authorizationResult.Message), 401
 
@@ -233,6 +237,7 @@ def refresh():
 @basic_role_required
 def logout():
     resp = jsonify({'logout': True})
+    # Remove the access_token form the browser
     resp.set_cookie('access_token', "", expires=0)
     set_access_cookies(resp, "")
     return resp, 200

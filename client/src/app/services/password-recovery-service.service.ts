@@ -39,6 +39,16 @@ export class PasswordRecoveryServiceService {
     this.router.navigate(['home']);
   }
 
+  public isAuthenticatedToChangePassword(): boolean {
+    return this.getCookieValue('access_token_password') != null;
+  }
 
+
+  private getCookieValue(name: string) {
+    const value = `; ${document.cookie}`;
+    const parts = value.split(`; ${name}=`);
+    if (parts.length === 2)
+      return parts.pop().split(';').shift();
+  }
 
 }
