@@ -36,14 +36,24 @@ def valid_email(email):
 def password_is_valid(password):
     if len(password) != Config.LENGTH_OF_THE_PASSWORD:
         return AuthorizationResult(isSuccess=False, Message="Password should be exactly "+str(Config.LENGTH_OF_THE_PASSWORD)+" characters")
-    elif re.search('[0-9]', password) is None:
-        return AuthorizationResult(isSuccess=False,
-                                   Message="Make sure your password has a number in it ")
-    elif re.search('[A-Z]', password) is None:
-        return AuthorizationResult(isSuccess=False,
-                                   Message="Make sure your password has a capital letter in it ")
-    else:
-        return AuthorizationResult(isSuccess=True,
+    for value, msg in Config.PASSWORD_VALIDATION_STRUCTURE.items():
+        if re.search(value, password) is None:
+            return AuthorizationResult(isSuccess=False,
+                                       Message=msg)
+    if Config.DICTIONARY_ATTACK:
+        if dictionary_attack(password):
+            return AuthorizationResult(isSuccess=False,
+                                       Message="Password is not safe! ")
+    return AuthorizationResult(isSuccess=True,
                                    Message="Password is ok! ")
 
 
+def dictionary_attack(password):
+    with open('word_list.txt') as f:
+        for line in f:
+            # For Python3, use print(line)
+            if password in line:
+                f.close()
+                return True
+    f.close()
+    return False

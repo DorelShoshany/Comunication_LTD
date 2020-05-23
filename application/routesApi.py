@@ -201,7 +201,6 @@ def login():
 
 # tokens func:
 
-
 def assign_access_refresh_tokens(user, url):
     expires = datetime.timedelta(days=Config.TIME_EXPIRES_ACCESS_TOKENS_ROLE_BASIC)
     access_token = create_access_token(identity=user, expires_delta=expires)
@@ -252,7 +251,7 @@ def unset_jwt():
 @jwt.unauthorized_loader
 def unauthorized_callback(callback):
     # No auth header
-    return jsonify("unauthorized_callback"), 400  # redirect(app.config['BASE_URL'] + '/login', 302)
+    return jsonify(Config.MSG_FOR_ROLE_REQUIRED), 400  # redirect(app.config['BASE_URL'] + '/login', 302)
 
 
 @jwt.invalid_token_loader

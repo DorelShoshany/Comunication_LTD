@@ -6,9 +6,13 @@ import export
 class Config(object):
 
     BASE_URL = 'https://127.0.0.1:80'  # Running on localhost
-    SSL_DISABLE = True
-    CORS_HEADERS='Content-Type'
+    CORS_HEADERS = 'Content-Type'
     SECRET_KEY = os.environ.get('SECRET_KEY') or "secret_string"
+
+    # open ssl:
+    SSL_DISABLE = True
+    FLASK_RUN_CERT = 'adhoc'
+
     # DB:
     nameFileDB = "CommunicationLTDDB.db"
     basedir = os.path.dirname(os.path.abspath(__file__))
@@ -28,23 +32,29 @@ class Config(object):
     ROLE = 'roles'
 
     # mail:
-
     MAIL_SERVER = 'smtp.mailtrap.io'
     MAIL_PORT = 2525
     MAIL_USERNAME = os.environ.get('MAIL_USERNAME')
     MAIL_PASSWORD = os.environ.get('MAIL_PASSWORD')
-
     MAIL_USE_TLS = True
     MAIL_USE_SSL = False
     MAIL_DEFAULT_SENDER = 'dorel@ComunicationLTD.com'
 
-    #JWT_ACCESS_TOKEN_EXPIRES =
 
-    # CONST:
+    # PASSWORD:
+
     LENGTH_OF_THE_SALT = 32
     LENGTH_OF_THE_PASSWORD = 10
     HISTORY_OF_THE_PASSWORDS = 3
     LOGIN_LIMIT_TRYING = 3
+    PASSWORD_VALIDATION_STRUCTURE = {'[0-9]': "Make sure your password has a number in it ",
+                                     '[A-Z]': "Make sure your password has a capital letter in it ",
+                                     '[a-z]': "Make sure your password has a lower letter case in it "
+                                     }
+    DICTIONARY_ATTACK = True
+
+
+    # EMAIL:
     TITLE_MSG_EMAIL_PASSWORD_RECOVERY = "Password Recovery - Communication LTD"
     TITLE_MSG_EMAIL_DEFAULT = 'Communication LTD'
     USER_LOCK_TIME_IN_MINUTES = datetime.timedelta(minutes=15)
