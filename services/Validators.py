@@ -12,6 +12,8 @@ def form_is_full(form, field):
             return form_is_not_full_res
     if ""  in form.values():
         return form_is_not_full_res
+    if '""'  in form.values():
+        return form_is_not_full_res
     return AuthorizationResult(isSuccess=True, Message="All form fields are filled ")
 
 

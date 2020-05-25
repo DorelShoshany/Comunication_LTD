@@ -10,7 +10,6 @@ import { Router } from '@angular/router';
 })
 export class RegistertionFormComponent implements OnInit {
   public registerModel = new RegisterModel();
-  public error = "err";
   public errorMessage = '';
 
   constructor(private httpClient: HttpClient,

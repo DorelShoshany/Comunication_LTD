@@ -20,9 +20,8 @@
       <label>Sector</label><br><br>
       <app-sector-selection-list required name="sector" (valueChanged)="registerModel.sectorId = $event.id">
       </app-sector-selection-list>
-      <button (click)="sendFormRegistetion()" [disabled]="firstName.errors?.required || lastName.errors?.required || email.errors?.required ||
-        password.errors?.required">Save</button>
-      <div>{{ error }}</div>
+      <button (click)="sendFormRegistetion()" #sendButton [disabled]="firstName.errors?.required || lastName.errors?.required || email.errors?.required ||
+        password.errors?.required" [title]="sendButton.disabled ? 'Please fill form inputs' : ''">Save</button>
       <div class="error-message">
         {{errorMessage}}
       </div>

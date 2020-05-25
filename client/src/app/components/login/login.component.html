@@ -1,15 +1,16 @@
-<div>
+<form>
   <h2>Login Page</h2>
   <br>
   <br>
 
-    <label>Email</label><br>
-    <input type="email" [(ngModel)]="email" /><br>
-    <label>Password</label><br><br>
-    <input type="password" [(ngModel)]="password" name="password" />
-    <button (click)="login()">Login</button>
-    <div class="errorMessage">{{ errorMessage}}</div>
+  <label>Email</label><br>
+  <input type="email" [(ngModel)]="email" required name="email" #emailInput="ngModel" /><br>
+  <label>Password</label><br><br>
+  <input type="password" [(ngModel)]="password" required name="password" #passwordInput="ngModel" />
+  <button (click)="login()" #sendButton [disabled]="emailInput.errors?.required || passwordInput.errors?.required"
+    [title]="sendButton.disabled ? 'Please fill form inputs' : ''">Login</button>
+  <div class="errorMessage">{{ errorMessage}}</div>
 
 
-</div>
+</form>
 <p>Forgot your password? <a [routerLink]="['/forgotYourPassword']"> Click Here</a></p>

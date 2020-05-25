@@ -4,7 +4,6 @@ from models.AuthorizationResult import AuthorizationResult
 from services import  UserTokenEncryptinoService, PasswordEncryption
 from services.AuthorizationService import start_login_process, was_password_used_in_the_last_given_occurrences, \
     start_password_recovery_process, start_verify_password_and_token, start_change_password
-from services.DAL import UserProvider, DAL
 from services.Validators import password_is_valid, form_is_full, valid_email
 
 
