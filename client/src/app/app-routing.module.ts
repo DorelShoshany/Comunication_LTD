@@ -19,11 +19,11 @@ const routes: Routes = [
   { path: 'home', component: HomePageComponent },
   { path: 'login', component: LoginComponent, canActivate: [AnonymousGuard] },
   { path: 'personal', component: PersonalAreaComponent, canActivate: [AuthenticateGuard] },
-  { path: 'register', component: RegistertionFormComponent },
+  { path: 'register', component: RegistertionFormComponent, canActivate: [AnonymousGuard] },
   { path: 'forgotYourPassword', component: ForgetPasswordComponent },
   { path: 'passwordRecovery', component: PasswordRecoveryComponent },
   { path: 'changePassword', component: ChangePasswordComponent, canActivate: [PasswordRecoveryGuard] },
-  { path: 'logout', component: LogoutComponent }
+  { path: 'logout', component: LogoutComponent, canActivate: [AuthenticateGuard] }
 
 
 

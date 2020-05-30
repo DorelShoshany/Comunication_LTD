@@ -51,7 +51,7 @@ def password_is_valid(password):
 
 
 def dictionary_attack(password):
-    with open('word_list.txt') as f:
+    with open(Config.DICTIONARY_ATTACK_FILE) as f:
         for line in f:
             # For Python3, use print(line)
             if password in line:

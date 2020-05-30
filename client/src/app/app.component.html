@@ -1,16 +1,23 @@
 <div class="container-fluid text-center top-container">
-  <img src="assets/logo.jpeg" alt="Dorel" width="5%" height="auto">
+  <div class="logos">
+    <img src="assets/logo.jpeg" alt="Dorel" width="10%" height="auto">
+    <img src="assets/dor.jpg" alt="Dor" width="10%" height="auto">
+  </div>
 </div>
+
 
 <nav class="navbar navbar-fixed-top navbar-dark bg-inverse">
   <div class="container">
     <ul class="nav nav-pills" routerLinkActive="active">
       <li class="nav-item"><a class="nav-link" routerLink="home">Home</a></li>
-      <li class="nav-item"><a class="nav-link" routerLink="login">Login</a></li>
-      <li class="nav-item"><a class="nav-link" routerLink="register">Register</a></li>
+      <li class="nav-item"><a class="nav-link" [routerLink]="['/login']"
+          *ngIf="!authentication.isAuthenticated()">Login</a></li>
+      <li class="nav-item"><a class="nav-link" [routerLink]="['/register']"
+          *ngIf="!authentication.isAuthenticated()">Register</a></li>
       <li class="nav-item"><a class="nav-link" [routerLink]="['/personal']"
           *ngIf="authentication.isAuthenticated()">Personal - Area</a></li>
-      <li class="nav-item"><a class="nav-link" routerLink="logout">Logout</a></li>
+      <li class="nav-item"><a class="nav-link" [routerLink]="['/logout']"
+          *ngIf="authentication.isAuthenticated()">Logout</a></li>
     </ul>
   </div>
 </nav>

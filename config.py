@@ -52,6 +52,7 @@ class Config(object):
                                      '[a-z]': "Make sure your password has a lower letter case in it "
                                      }
     DICTIONARY_ATTACK = True
+    DICTIONARY_ATTACK_FILE = 'word_list.txt'
 
 
     # EMAIL:

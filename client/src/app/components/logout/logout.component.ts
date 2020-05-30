@@ -24,6 +24,9 @@ export class LogoutComponent implements OnInit {
         const url = '/api/logout';
         return await this.httpClient.get(url).toPromise();
       }
+      else {
+        this.router.navigate(['personal']);
+      }
     }
     catch (err) {
       this.errorMessage = err.error;

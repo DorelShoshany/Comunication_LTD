@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { AuthenticationService } from 'src/app/services/authentication.service';
+import { Title } from "@angular/platform-browser";
 
 @Component({
   selector: 'app-root',
@@ -9,7 +10,7 @@ import { AuthenticationService } from 'src/app/services/authentication.service';
 export class AppComponent {
   title = 'client';
 
-  constructor(public authentication: AuthenticationService) {
-
+  constructor(public authentication: AuthenticationService, private titleService: Title) {
+    this.titleService.setTitle("Communication LTD")
   }
 }
