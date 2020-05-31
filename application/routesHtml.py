@@ -11,7 +11,7 @@ packagesData = [{"courseID":"1111","title":"PHP 111","description":"Intro to PHP
 @app.route('/index')
 @app.route('/home')
 def index():
-   return render_template("index.html", login=False)
+   return "ok" , 200#render_template("index.html", login=False)
 
 
 #@app.route("/login")
