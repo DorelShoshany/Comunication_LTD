@@ -1,4 +1,3 @@
-
 from flask import Flask
 #from flask_cors import  CORS, cross_origin
 from flask_jwt_extended import JWTManager
@@ -17,7 +16,8 @@ jwt = JWTManager(app)
 mail = Mail(app)
 
 
-from application import routesHtml, routesApi
+from application import routesHtml
+from application.routers import sectorRoutes, packageRouters, passwordRouters,authorizationRouters, jwtAnnotation
 
 
 @app.before_first_request
