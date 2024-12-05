@@ -10,7 +10,7 @@ chardet==3.0.4
 Click==7.0
 colorama==0.4.3
 crypto==1.4.1
-cryptography==2.8
+cryptography==3.2
 curve==0.1.0
 cycler==0.10.0
 Django==3.0.4
